@@ -11,7 +11,7 @@
 			this.stage.backgroundColor = '#ffcfff'; 
 
 			this.preloadBar = this.add.sprite(28, 80, 'preloadBar');
-            this.game.load.setPreloadSprite(this.preloadBar);
+			this.game.load.setPreloadSprite(this.preloadBar);
 
 			// all the resource loading goes here:
 			this.game.load.audio('introMusic', 'res/intro.ogg');

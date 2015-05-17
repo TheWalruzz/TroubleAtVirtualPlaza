@@ -33,11 +33,8 @@
 					TAVP.Globals.music.play();
 				}
 			}
-			else
-			{
-				if (TAVP.Globals.music.isPlaying)
+			else if (TAVP.Globals.music.isPlaying)
 					TAVP.Globals.music.stop();
-			}
 		}
 	};
 } 
