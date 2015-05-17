@@ -7,7 +7,7 @@
 		logo1: Phaser.Text;
 		logo2: Phaser.Text;
 
-		menu: Phaser.Text[] = [null, null, null];
+		menu: TAVP.Menu;
 
 		allImages: Phaser.Group;
 		menuChoicesGrp: Phaser.Group;
@@ -51,12 +51,13 @@
 			this.bust.y = this.world.centerY;
 			this.allImages.add(this.bust);
 
-			this.menu = TAVP.Menu.create(this, TAVP.Config.menuStyle,
-				[
-					'New Game', 'Options', 'Cheats'
-				]);
-			for (var i = 0; i < this.menu.length; i++)
-				this.menuChoicesGrp.add(this.menu[i]);
+			this.menu = new TAVP.Menu(this,
+				['New Game', 'Options', 'Cheats'],
+				TAVP.Config.menuStyle,
+				TAVP.Config.menuStyleChosen);
+
+			for (var i = 0; i < this.menu.menu.length; i++)
+				this.menuChoicesGrp.add(this.menu.menu[i]);
 			this.allImages.add(this.menuChoicesGrp);
 			
 			if (!TAVP.Flags.mainMenuVisited)
@@ -67,8 +68,7 @@
 				TAVP.Flags.mainMenuVisited = true;
 			}
 
-			TAVP.Menu.init(this,
-				TAVP.Config.menuStyle,
+			this.menu.setCallbacks(
 				[
 					() =>
 					{
@@ -81,13 +81,12 @@
 						tween.onComplete.addOnce(() => this.game.state.start('Level1'));
 					},
 					() => this.game.state.start('Options'),
-					() => this.game.state.start('Cheats')
-				]);
+					() => this.game.state.start('Cheats')]);
 		}
 
 		update()
 		{
-			TAVP.Menu.update(this, TAVP.Config.menuStyleChosen);
+			this.menu.update();
 		}
 
 		render() { TAVP.Utilities.render(); }

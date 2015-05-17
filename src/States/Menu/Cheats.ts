@@ -5,7 +5,7 @@
 		bust: Phaser.Sprite;
 		title: Phaser.Text;
 
-		menu: Phaser.Text[] = [null];
+		menu: TAVP.Menu;
 
 		create()
 		{
@@ -23,13 +23,12 @@
 			this.title.x = this.world.centerX - (this.title.width / 2);
 			this.title.y = 3;
 
-			this.menu = TAVP.Menu.create(this, TAVP.Config.menuStyle,
-				[
-					'Back'
-				]);
-
-			TAVP.Menu.init(this,
+			this.menu = new TAVP.Menu(this,
+				['Back'],
 				TAVP.Config.menuStyle,
+				TAVP.Config.menuStyleChosen);
+
+			this.menu.setCallbacks(
 				[
 					() => this.game.state.start('MainMenu')
 				]);
@@ -37,7 +36,7 @@
 
 		update()
 		{
-			TAVP.Menu.update(this, TAVP.Config.menuStyleChosen);
+			this.menu.update();
 		}
 
 		render() { TAVP.Utilities.render(); }
