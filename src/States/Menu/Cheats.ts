@@ -24,6 +24,8 @@
 			this.title.y = 3;
 
 			this.menu = new TAVP.Menu(this,
+				this.world.centerX,
+				this.world.centerY - 10,
 				['Back'],
 				TAVP.Config.menuStyle,
 				TAVP.Config.menuStyleChosen);

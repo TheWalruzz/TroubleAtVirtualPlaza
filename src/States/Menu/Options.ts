@@ -24,6 +24,8 @@
 			this.title.y = 3;
 
 			this.menu = new TAVP.Menu(this,
+				this.world.centerX,
+				this.world.centerY - 10,
 				[
 					'Music: ' + ((TAVP.Config.musicMuted) ? 'Off' : 'On'),
 					'Back'
@@ -38,7 +40,7 @@
 						TAVP.Config.musicMuted = !TAVP.Config.musicMuted;
 						TAVP.Utilities.playMusic('introMusic');
 
-						this.menu.menu[0].text = 'Music: ' + ((TAVP.Config.musicMuted) ? 'Off' : 'On');
+						this.menu.options[0].text = 'Music: ' + ((TAVP.Config.musicMuted) ? 'Off' : 'On');
 					},
 					() => this.game.state.start('MainMenu')]);
 		}

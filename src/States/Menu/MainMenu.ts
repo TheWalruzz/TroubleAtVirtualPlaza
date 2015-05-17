@@ -52,12 +52,14 @@
 			this.allImages.add(this.bust);
 
 			this.menu = new TAVP.Menu(this,
+				this.world.centerX,
+				this.world.centerY - 10,
 				['New Game', 'Options', 'Cheats'],
 				TAVP.Config.menuStyle,
 				TAVP.Config.menuStyleChosen);
 
-			for (var i = 0; i < this.menu.menu.length; i++)
-				this.menuChoicesGrp.add(this.menu.menu[i]);
+			for (var i = 0; i < this.menu.options.length; i++)
+				this.menuChoicesGrp.add(this.menu.options[i]);
 			this.allImages.add(this.menuChoicesGrp);
 			
 			if (!TAVP.Flags.mainMenuVisited)
