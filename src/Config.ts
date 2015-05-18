@@ -17,6 +17,14 @@
 			fontSize: 12
 		},
 
+		dialogueTextStyle: {
+			font: "monospace",
+			fontSize: 9,
+			fill: "#ffffff",
+			stroke: '#000000',
+			strokeThickness: 2
+		},
+
 		musicMuted: false
 	};
 }

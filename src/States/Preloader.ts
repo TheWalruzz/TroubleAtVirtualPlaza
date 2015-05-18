@@ -17,6 +17,7 @@
 			this.game.load.audio('introMusic', 'res/intro.ogg');
 			this.game.load.image('bust', 'res/ma_bust.png');
 			this.game.load.image('bg', 'res/background.png');
+			this.game.load.image('dialogueBox', 'res/dialogueBox.png');
 		}
 
 		create()
