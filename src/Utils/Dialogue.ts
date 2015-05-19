@@ -54,25 +54,10 @@
 							this.showNextText();
 						}
 						else
-						{
-							for (var i = 0; i < this.textLines.length; i++)
-								this.textLines[i].destroy();
-
-							this.box.destroy();
-							this.spaceKey.onDown.forget();
-							this.timer.pendingDelete = true;
-							TAVP.Globals.paused = false;
-						}
+							this.stop();
 					}
 					else
-					{
-						for (var i = 0; i < this.currentTextLines.length; i++)
-							this.textLines[i].text = this.currentTextLines[i];
-
-						this.spaceKey.reset(false);
-						this.isReadyForNext = true;
-						this.timer.pendingDelete = true;
-					}
+						this.stop();
 				},
 				this.caller);
 
@@ -115,6 +100,17 @@
 				this.timer.pendingDelete = true;
 				TAVP.Globals.paused = false;
 			}
+		}
+
+		stop()
+		{
+			for (var i = 0; i < this.currentTextLines.length; i++)
+				this.textLines[i].text = this.currentTextLines[i];
+
+			this.spaceKey.reset(false);
+			this.isReadyForNext = true;
+			this.timer.pendingDelete = true;
+			TAVP.Globals.paused = false;
 		}
 
 		// quick'n'dirty implementation, but it works.
