@@ -17,7 +17,7 @@
 
 			// upper line of title
 			this.logo1 = this.game.add.text(0, 0, '私を買う', {});
-			this.logo1.font = 'sans-serif';
+			this.logo1.font = 'Homenaje';
 			this.logo1.stroke = '#000000';
 			this.logo1.strokeThickness = 4;
 			this.logo1.fill = '#ffffff';
@@ -29,21 +29,21 @@
 
 			// lower line of title
 			this.logo2 = this.game.add.text(0, 0, 'Trouble at Virtual Plaza', {});
-			this.logo2.font = 'sans-serif';
+			this.logo2.font = 'Homenaje';
 			this.logo2.stroke = '#000000';
 			this.logo2.strokeThickness = 4;
 			this.logo2.fill = '#ff11ff';
-			this.logo2.fontSize = 11;
+			this.logo2.fontSize = 13;
 			// coords are calculated here, because we need to know how big the text will be
 			this.logo2.x = this.world.centerX - (this.logo2.width / 2);
 			this.logo2.y = this.logo1.height - 4;
 
 			this.pressAnyKey = this.game.add.text(0, 0, 'Press Any Key', {});
-			this.pressAnyKey.font = 'monospace';
+			this.pressAnyKey.font = 'VT323';
 			this.pressAnyKey.stroke = '#000000';
 			this.pressAnyKey.strokeThickness = 4;
 			this.pressAnyKey.fill = '#ffffff';
-			this.pressAnyKey.fontSize = 12;
+			this.pressAnyKey.fontSize = 14;
 			this.pressAnyKey.fontWeight = 'bold';
 			this.pressAnyKey.visible = false;
 			this.pressAnyKey.x = this.world.centerX - (this.pressAnyKey.width / 2);

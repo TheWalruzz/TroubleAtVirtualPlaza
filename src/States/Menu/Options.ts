@@ -13,7 +13,7 @@
 			this.bust.y = this.world.centerY;
 
 			this.title = this.add.text(0, 0, 'Options', {});
-			this.title.font = 'sans-serif';
+			this.title.font = 'Homenaje';
 			this.title.stroke = '#000000';
 			this.title.strokeThickness = 4;
 			this.title.fill = '#ffffff';

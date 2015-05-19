@@ -18,11 +18,15 @@
 			this.game.load.image('bust', 'res/ma_bust.png');
 			this.game.load.image('bg', 'res/background.png');
 			this.game.load.image('dialogueBox', 'res/dialogueBox.png');
+
+			// load webfonts
+			this.game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
 		}
 
 		create()
 		{
-			this.game.state.start('Intro');
+			//this.game.state.start('Intro');
+			this.game.time.events.add(Phaser.Timer.SECOND,() => TAVP.Globals.game.state.start('Intro'), this);
 		}
 
 		render() { TAVP.Utilities.render(); }

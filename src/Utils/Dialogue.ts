@@ -39,9 +39,9 @@
 			this.box = this.caller.add.sprite(0, 1, this.boxID);
 			this.box.x = this.caller.world.centerX - (this.box.width / 2);
 
-			this.textLines[0] = this.caller.add.text(this.box.x + 3, 3, '', this.textStyle);
+			this.textLines[0] = this.caller.add.text(this.box.x + 3, 2, '', this.textStyle);
 			for (var i = 1; i < 4; i++)
-				this.textLines[i] = this.caller.add.text(this.box.x + 3, 3 + ((this.textLines[i - 1].height * 0.7) * i), '', this.textStyle);
+				this.textLines[i] = this.caller.add.text(this.box.x + 3, 2 + ((this.textLines[i - 1].height * 0.7) * i), '', this.textStyle);
 
 			this.spaceKey.onDown.add(
 				() =>
@@ -129,11 +129,11 @@
 			letter.destroy();
 
 			var howManyLines = Math.ceil((letterWidth * text.length) / this.box.width);
-			// + 2 at the end is added arbitrary just to make it more accurate
-			var charsPerLine = Math.ceil(this.box.width / letterWidth) + 2;
+			// -2 is arbitral for now
+			var charsPerLine = Math.floor(this.box.width / (letterWidth - 2));
 			var lastLineLastLetter = -1;
 
-			for (var i = 0, j = 0; i < howManyLines; i++)
+			for (var i = 0, j = 0; i < howManyLines && j < text.length; i++)
 			{
 				textArr.push();
 				var lastSpace = -1;
@@ -154,10 +154,13 @@
 						break;
 					}
 				}
+				//console.log(textArr[i]);
 
 				if (j == text.length && j < howManyLines * charsPerLine)
+				{
 					textArr[i] = text.substring(((lastLineLastLetter == -1) ? 0 : lastLineLastLetter))
 						.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+				}
 			}
 
 			return textArr;

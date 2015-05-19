@@ -31,7 +31,7 @@
 			{
 				this.options.push(this.caller.game.add.text(0, 0, this.texts[i], this.notChosenStyle));
 				this.options[i].x = centerXCoord - (this.options[i].width / 2);
-				this.options[i].y = this.options[i - 1].y + this.options[i - 1].height;
+				this.options[i].y = startYCoord + ((this.options[i - 1].height * 0.75) * i);
 			}
 		}
 

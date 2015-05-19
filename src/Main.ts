@@ -14,5 +14,7 @@ window.onload = () =>
 	// levels below
 	TAVP.Globals.game.state.add('Level1', TAVP.Level1);
 
+	//TAVP.Globals.game.time.events.add(Phaser.Timer.SECOND,() => TAVP.Globals.game.state.start('Boot'), this);
+
 	TAVP.Globals.game.state.start('Boot');
 };

@@ -2,7 +2,6 @@
 {
 	export class Level1 extends Phaser.State
 	{
-		flag = true;
 		dialogue: TAVP.Dialogue;
 
 		create()
@@ -11,7 +10,7 @@
 				this,
 				[
 					'The Virtual Plaza is facing the greatest danger of all time.',
-					'Evil vaporwave prodigy called "ブレーズ☆★☆ 420" has appeared.'
+					'Evil vaporwave prodigy called "☆★☆ 420" has appeared, wrecking havoc and destruction everywhere.'
 				],
 				TAVP.Config.dialogueTextStyle,
 				'dialogueBox');
