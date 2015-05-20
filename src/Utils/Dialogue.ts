@@ -5,10 +5,13 @@
 		caller: Phaser.State;
 		texts: string[];
 		boxID: string;
+		promptID: string;
 		spaceKey: Phaser.Key;
+		enterKey: Phaser.Key;
 		textStyle: {};
 
 		box: Phaser.Sprite;
+		prompt: Phaser.Sprite;
 		textLines: Phaser.Text[];
 
 		currentText: number;
@@ -16,48 +19,103 @@
 		currentTextLines: string[];
 		isReadyForNext: boolean;
 		timer: Phaser.TimerEvent;
+		promptTimer: Phaser.TimerEvent;
 
-		constructor(caller: Phaser.State, texts: string[], textStyle: {}, boxID: string)
+		active: boolean;
+
+		constructor(caller: Phaser.State, texts: string[], textStyle: {}, boxID: string, promptID: string)
 		{
 			this.caller = caller;
 			this.texts = texts;
 			this.boxID = boxID;
+			this.promptID = promptID;
 			this.textStyle = textStyle;
 
-			this.currentText = 0;
-			this.isReadyForNext = false;
-			this.textLines = [null, null, null, null];
-			this.currentTextLines = [null, null, null, null];
+			this.active = false;
 
 			this.spaceKey = this.caller.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-		}
-
-		start()
-		{
-			TAVP.Globals.paused = true;
+			this.enterKey = this.caller.input.keyboard.addKey(Phaser.Keyboard.ENTER);
 
 			this.box = this.caller.add.sprite(0, 1, this.boxID);
 			this.box.x = this.caller.world.centerX - (this.box.width / 2);
+			this.box.visible = false;
 
+			this.textLines = [null, null, null, null];
 			this.textLines[0] = this.caller.add.text(this.box.x + 3, 2, '', this.textStyle);
+			this.textLines[0].visible = false;
 			for (var i = 1; i < 4; i++)
+			{
 				this.textLines[i] = this.caller.add.text(this.box.x + 3, 2 + ((this.textLines[i - 1].height * 0.7) * i), '', this.textStyle);
+				this.textLines[i].visible = false;
+			}
+
+			this.prompt = this.caller.add.sprite(0, 0, this.promptID);
+			this.prompt.x = this.box.x + this.box.width - (this.prompt.width + 2);
+			this.prompt.y = this.box.y + this.box.height - (this.prompt.height + 2);
+			this.prompt.visible = false;
 
 			this.spaceKey.onDown.add(
 				() =>
 				{
-					if (this.isReadyForNext)
+					if (this.active)
 					{
-						if (this.currentText < this.texts.length)
+						if (this.isReadyForNext)
 						{
 							this.currentText++;
 							this.showNextText();
 						}
 						else
-							this.stop();
+						{
+							for (var i = 0; i < this.currentTextLines.length; i++)
+								this.textLines[i].text = this.currentTextLines[i];
+
+							this.isReadyForNext = true;
+						}
 					}
-					else
-						this.stop();
+				},
+				this.caller);
+
+			this.enterKey.onDown.add(
+				() =>
+				{
+					if (this.active)
+					{
+						if (this.isReadyForNext)
+						{
+							this.currentText++;
+							this.showNextText();
+						}
+						else
+						{
+							for (var i = 0; i < this.currentTextLines.length; i++)
+								this.textLines[i].text = this.currentTextLines[i];
+
+							this.isReadyForNext = true;
+						}
+					}
+				},
+				this.caller);
+		}
+
+		start()
+		{
+			TAVP.Globals.paused = true;
+			this.active = true;
+
+			this.currentText = 0;
+			this.isReadyForNext = false;
+			this.currentTextLines = [null, null, null, null];
+
+			this.box.visible = true;
+			for (var i = 0; i < 4; i++)
+				this.textLines[i].visible = true;
+
+			this.promptTimer = this.caller.time.events.loop(
+				750,
+				() =>
+				{
+					if (this.isReadyForNext)
+						this.prompt.visible = !this.prompt.visible;
 				},
 				this.caller);
 
@@ -66,15 +124,16 @@
 
 		showNextText()
 		{
+			this.prompt.visible = false;
+			this.isReadyForNext = false;
 			this.currentLine = 0;
 			if (this.currentText < this.texts.length)
 			{
 				for (var i = 0; i < this.textLines.length; i++)
 					this.textLines[i].text = '';
 				this.currentTextLines = this.divideText(this.texts[this.currentText]);
-				this.isReadyForNext = false;
 
-				this.timer = this.caller.game.time.events.repeat(80, this.countCharsFromArray(this.currentTextLines) + 1,
+				this.timer = this.caller.game.time.events.loop(80,
 					() =>
 					{
 						if (this.currentLine < this.currentTextLines.length)
@@ -84,33 +143,35 @@
 							else
 								this.currentLine++;
 						}
+						else
+						{
+							this.caller.game.time.events.remove(this.timer);
 
-						if (this.currentLine >= this.currentTextLines.length)
 							this.isReadyForNext = true;
+						}
 					},
 					this.caller);
 			}
 			else
-			{
-				for (var i = 0; i < this.textLines.length; i++)
-					this.textLines[i].destroy();
-
-				this.box.destroy();
-				this.spaceKey.onDown.forget();
-				this.timer.pendingDelete = true;
-				TAVP.Globals.paused = false;
-			}
+				this.stop();
 		}
 
 		stop()
 		{
 			for (var i = 0; i < this.currentTextLines.length; i++)
-				this.textLines[i].text = this.currentTextLines[i];
+				this.textLines[i].visible = false;
+
+			this.box.visible = false;
+			this.prompt.visible = false;
+
+			this.promptTimer.pendingDelete = true;
+			this.caller.game.time.events.remove(this.timer);
+			this.isReadyForNext = false;
+			TAVP.Globals.paused = false;
+			this.active = false;
 
 			this.spaceKey.reset(false);
-			this.isReadyForNext = true;
-			this.timer.pendingDelete = true;
-			TAVP.Globals.paused = false;
+			this.enterKey.reset(false);
 		}
 
 		// quick'n'dirty implementation, but it works.
@@ -129,7 +190,7 @@
 			var charsPerLine = Math.floor(this.box.width / (letterWidth - 2));
 			var lastLineLastLetter = -1;
 
-			for (var i = 0, j = 0; i < howManyLines && j < text.length; i++)
+			for (var i = 0, j = 0; i < howManyLines && i< 4 && j < text.length; i++)
 			{
 				textArr.push();
 				var lastSpace = -1;
@@ -150,13 +211,10 @@
 						break;
 					}
 				}
-				//console.log(textArr[i]);
 
-				if (j == text.length && j < howManyLines * charsPerLine)
-				{
+				if (j == text.length && j < howManyLines * charsPerLine && i < 4)
 					textArr[i] = text.substring(((lastLineLastLetter == -1) ? 0 : lastLineLastLetter))
 						.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
-				}
 			}
 
 			return textArr;

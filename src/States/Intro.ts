@@ -72,6 +72,16 @@
 				}
 			};
 
+			this.time.events.loop(
+				750,
+				() =>
+				{
+					if (!this.alreadyEnded && this.showAnyKey)
+						this.pressAnyKey.visible = !this.pressAnyKey.visible;
+				},
+				this
+			);
+
 			TAVP.Globals.music = this.add.audio('introMusic');
 			TAVP.Globals.music.loop = true;
 			TAVP.Globals.music.play();
@@ -79,15 +89,6 @@
 
 		update()
 		{
-			if (!this.alreadyEnded && this.showAnyKey)
-			{
-				this.timer += this.game.time.elapsed;
-				if (this.timer >= 750)
-				{
-					this.timer -= 750;
-					this.pressAnyKey.visible = !this.pressAnyKey.visible;
-				}
-			}
 		}
 
 		render() { TAVP.Utilities.render(); }

@@ -18,6 +18,7 @@
 			this.game.load.image('bust', 'res/ma_bust.png');
 			this.game.load.image('bg', 'res/background.png');
 			this.game.load.image('dialogueBox', 'res/dialogueBox.png');
+			this.game.load.image('dialoguePrompt', 'res/dialoguePrompt.png');
 
 			// load webfonts
 			this.game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');

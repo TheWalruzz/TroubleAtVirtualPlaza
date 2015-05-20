@@ -13,7 +13,8 @@
 					'Evil vaporwave prodigy called "☆★☆ 420" has appeared, wrecking havoc and destruction everywhere.'
 				],
 				TAVP.Config.dialogueTextStyle,
-				'dialogueBox');
+				'dialogueBox',
+				'dialoguePrompt');
 
 			this.dialogue.start();
 		}
