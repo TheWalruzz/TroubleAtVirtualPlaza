@@ -19,9 +19,13 @@
 			this.game.load.image('bg', 'res/background.png');
 			this.game.load.image('dialogueBox', 'res/dialogueBox.png');
 			this.game.load.image('dialoguePrompt', 'res/dialoguePrompt.png');
+			this.game.load.spritesheet('playerSprite', 'res/playerSprite.png', 16, 16);
 
 			// load webfonts
 			this.game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
+
+			this.game.physics.startSystem(Phaser.Physics.ARCADE);
+			this.game.physics.arcade.gravity = new Phaser.Point(0, TAVP.Config.gravityY);
 		}
 
 		create()

@@ -25,7 +25,8 @@
 			strokeThickness: 3
 		},
 
-		musicMuted: false
+		musicMuted: false,
+		gravityY: 50
 	};
 }
 
