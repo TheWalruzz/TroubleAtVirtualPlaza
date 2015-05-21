@@ -185,12 +185,12 @@
 			var letterWidth = letter.width;
 			letter.destroy();
 
-			var howManyLines = Math.ceil((letterWidth * text.length) / this.box.width);
+			var howManyLines = Math.ceil((letterWidth * text.length) / this.box.width) + this.countNewlines(text);
 			// -2 is arbitral for now
 			var charsPerLine = Math.floor(this.box.width / (letterWidth - 2));
 			var lastLineLastLetter = -1;
 
-			for (var i = 0, j = 0; i < howManyLines && i< 4 && j < text.length; i++)
+			for (var i = 0, j = 0; i < howManyLines && i < 4 && j < text.length; i++)
 			{
 				textArr.push();
 				var lastSpace = -1;
@@ -207,7 +207,16 @@
 					{
 						textArr[i] = text.substring(((lastLineLastLetter == -1) ? 0 : lastLineLastLetter),((lastSpace == -1) ? j : lastSpace))
 							.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
-						lastLineLastLetter = lastSpace;
+						lastLineLastLetter = ((lastSpace == -1) ? j : lastSpace);
+						break;
+					}
+					else if (char == '\n')
+					{
+						textArr[i] = text.substring(((lastLineLastLetter == -1) ? 0 : lastLineLastLetter), j)
+							.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+						j++;
+						lastLineLastLetter = j;
+						lastSpace = j;
 						break;
 					}
 				}
@@ -217,6 +226,7 @@
 						.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
 			}
 
+			console.log(textArr);
 			return textArr;
 		}
 
@@ -227,6 +237,17 @@
 				for (var j = 0; j < text[i].length; j++)
 					sum++;
 			return sum;
+		}
+
+		private countNewlines(text: string)
+		{
+			var count = 0;
+
+			for (var i = 0; i < text.length; i++)
+				if (text[i] == '\n')
+					count++;
+
+			return count;
 		}
 	}
 }
