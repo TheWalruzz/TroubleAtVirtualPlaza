@@ -4,7 +4,6 @@
 	{
 		isJumping: boolean;
 		fallAnim: Phaser.Animation;
-		idleAnim: Phaser.Animation;
 
 		constructor(game: Phaser.Game, x: number, y: number)
 		{
@@ -12,7 +11,7 @@
 
 			this.anchor.setTo(0.5, 0.5);
 
-			this.idleAnim = this.animations.add('idle', [0, 1, 2, 3, 2, 1], 10, true);
+			this.animations.add('idle', [0, 1, 2, 3, 2, 1], 10, true);
 			this.animations.add('run', [4, 5, 6, 7, 8, 9, 10, 11], 10, true);
 			this.animations.add('shoot', [12, 13, 14, 15], 10, false);
 			this.animations.add('jump', [42, 43, 44], 10, false);
@@ -21,7 +20,6 @@
 
 			this.game.physics.arcade.enableBody(this);
 			this.body.collideWorldBounds = true;
-			//this.body.mass = 0.5;
 
 			this.isJumping = false;
 
@@ -32,12 +30,13 @@
 		{
 			if (!TAVP.Globals.paused)
 			{
+				// so it works after being paused
 				this.body.enable = true;
+
+				this.body.velocity.x = 0;
 
 				if (!this.isJumping)
 				{
-					this.body.velocity.x = 0;
-
 					if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT))
 					{
 						this.body.velocity.x = -30;
@@ -54,7 +53,7 @@
 						if (this.scale.x == -1)
 							this.scale.x = 1;
 					}
-					else if (this.animations.currentAnim != this.idleAnim)
+					else
 						this.animations.play('idle');
 
 					if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP))
@@ -67,21 +66,19 @@
 				}
 				else
 				{
-					this.body.velocity.x = 0;
-
 					if (this.animations.currentAnim == this.fallAnim)
-					{
 						if (this.body.velocity.y == 0)
 							this.isJumping = false;
-					}
-					else if (this.body.velocity.y > 0)
-						this.animations.play('fall');
 
 					if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT) && this.scale.x == -1)
 						this.body.velocity.x = -30;
 					else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT) && this.scale.x == 1)
 						this.body.velocity.x = 30;
 				}
+
+				// so it always changes animation to falling when player is, well... falling
+				if (this.body.velocity.y > 0 && this.animations.currentAnim != this.fallAnim)
+					this.animations.play('fall');
 			}
 			else
 				this.body.enable = false;
