@@ -196,8 +196,8 @@
 				var lastSpace = -1;
 				for (; j < text.length; j++)
 				{
-					var char = text.charAt(j);
-					if (char == ' ' || char == ',' || char == '.' || char == '!' || char == '?')
+					var actualChar = text.charAt(j);
+					if (actualChar == ' ' || actualChar == ',' || actualChar == '.' || actualChar == '!' || actualChar == '?')
 					{
 						lastSpace = j;
 						continue;
@@ -210,7 +210,7 @@
 						lastLineLastLetter = ((lastSpace == -1) ? j : lastSpace);
 						break;
 					}
-					else if (char == '\n')
+					else if (actualChar == '\n')
 					{
 						textArr[i] = text.substring(((lastLineLastLetter == -1) ? 0 : lastLineLastLetter), j)
 							.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
