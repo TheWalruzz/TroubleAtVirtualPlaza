@@ -226,7 +226,6 @@
 						.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
 			}
 
-			console.log(textArr);
 			return textArr;
 		}
 
