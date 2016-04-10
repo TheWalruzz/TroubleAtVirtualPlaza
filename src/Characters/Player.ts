@@ -1,12 +1,9 @@
-﻿module TAVP
-{
-	export class Player extends Phaser.Sprite
-	{
+﻿module TAVP {
+	export class Player extends Phaser.Sprite {
 		isJumping: boolean;
 		fallAnim: Phaser.Animation;
 
-		constructor(game: Phaser.Game, x: number, y: number)
-		{
+		constructor(game: Phaser.Game, x: number, y: number) {
 			super(game, x, y, 'playerSprite');
 
 			this.anchor.setTo(0.5, 0.5);
@@ -26,27 +23,22 @@
 			this.game.add.existing(this);
 		}
 
-		update()
-		{
-			if (!TAVP.Globals.paused)
-			{
+		update() {
+			if (!TAVP.Globals.paused) {
 				// so it works after being paused
 				this.body.enable = true;
 
 				this.body.velocity.x = 0;
 
-				if (!this.isJumping)
-				{
-					if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT))
-					{
+				if (!this.isJumping) {
+					if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
 						this.body.velocity.x = -30;
 						this.animations.play('run');
 
 						if (this.scale.x == 1)
 							this.scale.x = -1;
 					}
-					else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT))
-					{
+					else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
 						this.body.velocity.x = 30;
 						this.animations.play('run');
 
@@ -56,16 +48,14 @@
 					else
 						this.animations.play('idle');
 
-					if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP))
-					{
+					if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
 						this.body.velocity.y = -45;
 						this.animations.play('jump');
 
 						this.isJumping = true;
 					}
 				}
-				else
-				{
+				else {
 					if (this.animations.currentAnim == this.fallAnim)
 						if (this.body.velocity.y == 0)
 							this.isJumping = false;

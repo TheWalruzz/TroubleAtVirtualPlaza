@@ -1,7 +1,5 @@
-﻿module TAVP
-{
-	export class MainMenu extends Phaser.State
-	{
+﻿module TAVP {
+	export class MainMenu extends Phaser.State {
 		bust: Phaser.Sprite;
 		background: Phaser.Sprite;
 		logo1: Phaser.Text;
@@ -12,8 +10,7 @@
 		allImages: Phaser.Group;
 		menuChoicesGrp: Phaser.Group;
 
-		create()
-		{
+		create() {
 			this.allImages = this.add.group();
 			this.menuChoicesGrp = this.add.group();
 
@@ -61,9 +58,8 @@
 			for (var i = 0; i < this.menu.options.length; i++)
 				this.menuChoicesGrp.add(this.menu.options[i]);
 			this.allImages.add(this.menuChoicesGrp);
-			
-			if (!TAVP.Flags.mainMenuVisited)
-			{
+
+			if (!TAVP.Flags.mainMenuVisited) {
 				this.menuChoicesGrp.alpha = 0;
 				var menuTween = this.add.tween(this.menuChoicesGrp).to({ alpha: 1 }, 1500, Phaser.Easing.Linear.None, true);
 
@@ -72,10 +68,8 @@
 
 			this.menu.setCallbacks(
 				[
-					() =>
-					{
-						if (!TAVP.Config.musicMuted)
-						{
+					() => {
+						if (!TAVP.Config.musicMuted) {
 							TAVP.Globals.music.fadeOut(1000);
 							TAVP.Globals.music.onFadeComplete.addOnce(() => TAVP.Globals.music.stop());
 						}
@@ -86,8 +80,7 @@
 					() => this.game.state.start('Cheats')]);
 		}
 
-		update()
-		{
+		update() {
 			this.menu.update();
 		}
 

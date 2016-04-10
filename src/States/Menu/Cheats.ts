@@ -1,14 +1,11 @@
-﻿module TAVP
-{
-	export class Cheats extends Phaser.State
-	{
+﻿module TAVP {
+	export class Cheats extends Phaser.State {
 		bust: Phaser.Sprite;
 		title: Phaser.Text;
 
 		menu: TAVP.Menu;
 
-		create()
-		{
+		create() {
 			this.bust = this.add.sprite(0, 0, 'bust');
 			this.bust.y = this.world.centerY;
 
@@ -36,8 +33,7 @@
 				]);
 		}
 
-		update()
-		{
+		update() {
 			this.menu.update();
 		}
 

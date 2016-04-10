@@ -1,14 +1,11 @@
-﻿module TAVP
-{
-	export class Options extends Phaser.State
-	{
+﻿module TAVP {
+	export class Options extends Phaser.State {
 		bust: Phaser.Sprite;
 		title: Phaser.Text;
 
 		menu: TAVP.Menu;
 
-		create()
-		{
+		create() {
 			this.bust = this.add.sprite(0, 0, 'bust');
 			this.bust.y = this.world.centerY;
 
@@ -35,8 +32,7 @@
 
 			this.menu.setCallbacks(
 				[
-					() =>
-					{
+					() => {
 						TAVP.Config.musicMuted = !TAVP.Config.musicMuted;
 						TAVP.Utilities.playMusic('introMusic');
 
@@ -45,8 +41,7 @@
 					() => this.game.state.start('MainMenu')]);
 		}
 
-		update()
-		{
+		update() {
 			this.menu.update();
 		}
 

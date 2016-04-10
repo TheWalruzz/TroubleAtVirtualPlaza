@@ -1,7 +1,5 @@
-﻿module TAVP
-{
-	export class Dialogue
-	{
+﻿module TAVP {
+	export class Dialogue {
 		caller: Phaser.State;
 		texts: string[];
 		boxID: string;
@@ -23,8 +21,7 @@
 
 		active: boolean;
 
-		constructor(caller: Phaser.State, texts: string[], textStyle: {}, boxID: string, promptID: string)
-		{
+		constructor(caller: Phaser.State, texts: string[], textStyle: {}, boxID: string, promptID: string) {
 			this.caller = caller;
 			this.texts = texts;
 			this.boxID = boxID;
@@ -43,8 +40,7 @@
 			this.textLines = [null, null, null, null];
 			this.textLines[0] = this.caller.add.text(this.box.x + 3, 2, '', this.textStyle);
 			this.textLines[0].visible = false;
-			for (var i = 1; i < 4; i++)
-			{
+			for (var i = 1; i < 4; i++) {
 				this.textLines[i] = this.caller.add.text(this.box.x + 3, 2 + ((this.textLines[i - 1].height * 0.7) * i), '', this.textStyle);
 				this.textLines[i].visible = false;
 			}
@@ -55,17 +51,13 @@
 			this.prompt.visible = false;
 
 			this.spaceKey.onDown.add(
-				() =>
-				{
-					if (this.active)
-					{
-						if (this.isReadyForNext)
-						{
+				() => {
+					if (this.active) {
+						if (this.isReadyForNext) {
 							this.currentText++;
 							this.showNextText();
 						}
-						else
-						{
+						else {
 							for (var i = 0; i < this.currentTextLines.length; i++)
 								this.textLines[i].text = this.currentTextLines[i];
 
@@ -76,17 +68,13 @@
 				this.caller);
 
 			this.enterKey.onDown.add(
-				() =>
-				{
-					if (this.active)
-					{
-						if (this.isReadyForNext)
-						{
+				() => {
+					if (this.active) {
+						if (this.isReadyForNext) {
 							this.currentText++;
 							this.showNextText();
 						}
-						else
-						{
+						else {
 							for (var i = 0; i < this.currentTextLines.length; i++)
 								this.textLines[i].text = this.currentTextLines[i];
 
@@ -97,8 +85,7 @@
 				this.caller);
 		}
 
-		start()
-		{
+		start() {
 			TAVP.Globals.paused = true;
 			this.active = true;
 
@@ -112,8 +99,7 @@
 
 			this.promptTimer = this.caller.time.events.loop(
 				750,
-				() =>
-				{
+				() => {
 					if (this.isReadyForNext)
 						this.prompt.visible = !this.prompt.visible;
 				},
@@ -122,29 +108,24 @@
 			this.showNextText();
 		}
 
-		showNextText()
-		{
+		showNextText() {
 			this.prompt.visible = false;
 			this.isReadyForNext = false;
 			this.currentLine = 0;
-			if (this.currentText < this.texts.length)
-			{
+			if (this.currentText < this.texts.length) {
 				for (var i = 0; i < this.textLines.length; i++)
 					this.textLines[i].text = '';
 				this.currentTextLines = this.divideText(this.texts[this.currentText]);
 
 				this.timer = this.caller.game.time.events.loop(80,
-					() =>
-					{
-						if (this.currentLine < this.currentTextLines.length)
-						{
+					() => {
+						if (this.currentLine < this.currentTextLines.length) {
 							if (this.textLines[this.currentLine].text.length < this.currentTextLines[this.currentLine].length)
 								this.textLines[this.currentLine].text = this.currentTextLines[this.currentLine].substr(0, this.textLines[this.currentLine].text.length + 1);
 							else
 								this.currentLine++;
 						}
-						else
-						{
+						else {
 							this.caller.game.time.events.remove(this.timer);
 
 							this.isReadyForNext = true;
@@ -156,8 +137,7 @@
 				this.stop();
 		}
 
-		stop()
-		{
+		stop() {
 			for (var i = 0; i < this.currentTextLines.length; i++)
 				this.textLines[i].visible = false;
 
@@ -176,8 +156,7 @@
 
 		// quick'n'dirty implementation, but it works.
 		// to be possibly refactorized later
-		private divideText(text: string): string[]
-		{
+		private divideText(text: string): string[] {
 			var textArr = [];
 
 			// we create one letter in given style (assuming it's monospace!), and we check its width
@@ -190,28 +169,23 @@
 			var charsPerLine = Math.floor(this.box.width / (letterWidth - 2));
 			var lastLineLastLetter = -1;
 
-			for (var i = 0, j = 0; i < howManyLines && i < 4 && j < text.length; i++)
-			{
+			for (var i = 0, j = 0; i < howManyLines && i < 4 && j < text.length; i++) {
 				textArr.push();
 				var lastSpace = -1;
-				for (; j < text.length; j++)
-				{
+				for (; j < text.length; j++) {
 					var actualChar = text.charAt(j);
-					if (actualChar == ' ' || actualChar == ',' || actualChar == '.' || actualChar == '!' || actualChar == '?')
-					{
+					if (actualChar == ' ' || actualChar == ',' || actualChar == '.' || actualChar == '!' || actualChar == '?') {
 						lastSpace = j;
 						continue;
 					}
 
-					if (j - ((lastLineLastLetter == -1) ? 0 : lastLineLastLetter) >= charsPerLine)
-					{
-						textArr[i] = text.substring(((lastLineLastLetter == -1) ? 0 : lastLineLastLetter),((lastSpace == -1) ? j : lastSpace))
+					if (j - ((lastLineLastLetter == -1) ? 0 : lastLineLastLetter) >= charsPerLine) {
+						textArr[i] = text.substring(((lastLineLastLetter == -1) ? 0 : lastLineLastLetter), ((lastSpace == -1) ? j : lastSpace))
 							.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
 						lastLineLastLetter = ((lastSpace == -1) ? j : lastSpace);
 						break;
 					}
-					else if (actualChar == '\n')
-					{
+					else if (actualChar == '\n') {
 						textArr[i] = text.substring(((lastLineLastLetter == -1) ? 0 : lastLineLastLetter), j)
 							.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
 						j++;
@@ -229,8 +203,7 @@
 			return textArr;
 		}
 
-		private countCharsFromArray(text: string[]): number
-		{
+		private countCharsFromArray(text: string[]): number {
 			var sum = 0;
 			for (var i = 0; i < text.length; i++)
 				for (var j = 0; j < text[i].length; j++)
@@ -238,8 +211,7 @@
 			return sum;
 		}
 
-		private countNewlines(text: string)
-		{
+		private countNewlines(text: string) {
 			var count = 0;
 
 			for (var i = 0; i < text.length; i++)

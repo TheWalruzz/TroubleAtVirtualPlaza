@@ -1,5 +1,4 @@
-﻿module TAVP
-{
+﻿module TAVP {
 	export var Config = {
 		menuStyle: {
 			font: 'VT323',

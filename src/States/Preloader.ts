@@ -1,14 +1,11 @@
-﻿module TAVP
-{
-	export class Preloader extends Phaser.State
-	{
+﻿module TAVP {
+	export class Preloader extends Phaser.State {
 		preloadBar: Phaser.Sprite;
 		bust: Phaser.Sprite;
 
-		preload()
-		{
+		preload() {
 			// make the bg look awesomely pink
-			this.stage.backgroundColor = '#ffcfff'; 
+			this.stage.backgroundColor = '#ffcfff';
 
 			this.preloadBar = this.add.sprite(28, 80, 'preloadBar');
 			this.game.load.setPreloadSprite(this.preloadBar);
@@ -28,10 +25,9 @@
 			this.game.physics.arcade.gravity = new Phaser.Point(0, TAVP.Config.gravityY);
 		}
 
-		create()
-		{
+		create() {
 			//this.game.state.start('Intro');
-			this.game.time.events.add(Phaser.Timer.SECOND,() => TAVP.Globals.game.state.start('Intro'), this);
+			this.game.time.events.add(Phaser.Timer.SECOND, () => TAVP.Globals.game.state.start('Intro'), this);
 		}
 
 		render() { TAVP.Utilities.render(); }

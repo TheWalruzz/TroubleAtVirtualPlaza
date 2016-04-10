@@ -1,7 +1,6 @@
 ﻿// Trouble at Virtual Plaza entry point.
 
-window.onload = () =>
-{
+window.onload = () => {
 	TAVP.Globals.game = new Phaser.Game(160, 144, Phaser.CANVAS, '');
 
 	TAVP.Globals.game.state.add('Boot', TAVP.Boot);
@@ -13,8 +12,6 @@ window.onload = () =>
 
 	// levels below
 	TAVP.Globals.game.state.add('Level1', TAVP.Level1);
-
-	//TAVP.Globals.game.time.events.add(Phaser.Timer.SECOND,() => TAVP.Globals.game.state.start('Boot'), this);
 
 	TAVP.Globals.game.state.start('Boot');
 };

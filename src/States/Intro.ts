@@ -1,7 +1,5 @@
-﻿module TAVP
-{
-	export class Intro extends Phaser.State
-	{
+﻿module TAVP {
+	export class Intro extends Phaser.State {
 		bust: Phaser.Sprite;
 		background: Phaser.Sprite;
 		pressAnyKey: Phaser.Text;
@@ -11,8 +9,7 @@
 		alreadyEnded: boolean = false;
 		showAnyKey: boolean = false;
 
-		create()
-		{
+		create() {
 			this.background = this.add.sprite(0, 0, 'bg');
 
 			// upper line of title
@@ -56,10 +53,8 @@
 			var tweenAlpha = this.add.tween(this.bust).to({ alpha: 1 }, 2000, Phaser.Easing.Linear.None, true);
 			tweenAlpha.onComplete.addOnce(() => { this.showAnyKey = true; });
 
-			this.input.keyboard.onDownCallback = () =>
-			{
-				if (this.alreadyEnded == false)
-				{
+			this.input.keyboard.onDownCallback = () => {
+				if (this.alreadyEnded == false) {
 					tweenAlpha.stop();
 					this.bust.alpha = 1;
 
@@ -74,8 +69,7 @@
 
 			this.time.events.loop(
 				750,
-				() =>
-				{
+				() => {
 					if (!this.alreadyEnded && this.showAnyKey)
 						this.pressAnyKey.visible = !this.pressAnyKey.visible;
 				},
@@ -87,8 +81,7 @@
 			TAVP.Globals.music.play();
 		}
 
-		update()
-		{
+		update() {
 		}
 
 		render() { TAVP.Utilities.render(); }

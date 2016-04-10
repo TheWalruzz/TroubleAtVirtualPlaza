@@ -1,12 +1,9 @@
-﻿module TAVP
-{
-	export class Level1 extends Phaser.State
-	{
+﻿module TAVP {
+	export class Level1 extends Phaser.State {
 		dialogue: TAVP.Dialogue;
 		player: TAVP.Player;
 
-		create()
-		{
+		create() {
 			this.dialogue = new TAVP.Dialogue(
 				this,
 				[
@@ -24,8 +21,7 @@
 
 		}
 
-		update()
-		{
+		update() {
 		}
 
 		render() { TAVP.Utilities.render(); }
