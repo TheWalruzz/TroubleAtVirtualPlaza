@@ -165,8 +165,8 @@
 			letter.destroy();
 
 			var howManyLines = Math.ceil((letterWidth * text.length) / this.box.width) + this.countNewlines(text);
-			// -2 is arbitral for now
-			var charsPerLine = Math.floor(this.box.width / (letterWidth - 2));
+			// -3 is arbitral for now
+			var charsPerLine = Math.floor(this.box.width / (letterWidth - 3));
 			var lastLineLastLetter = -1;
 
 			for (var i = 0, j = 0; i < howManyLines && i < 4 && j < text.length; i++) {

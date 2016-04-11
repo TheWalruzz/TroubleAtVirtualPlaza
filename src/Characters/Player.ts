@@ -3,19 +3,21 @@
 		isJumping: boolean;
 		fallAnim: Phaser.Animation;
 
-		constructor(game: Phaser.Game, x: number, y: number) {
-			super(game, x, y, 'playerSprite');
+		constructor(x: number, y: number) {
+			super(TAVP.Globals.game, x, y, 'playerSprite');
 
 			this.anchor.setTo(0.5, 0.5);
 
 			this.animations.add('idle', [0, 1, 2, 3, 2, 1], 10, true);
 			this.animations.add('run', [4, 5, 6, 7, 8, 9, 10, 11], 10, true);
-			this.animations.add('shoot', [12, 13, 14, 15], 10, false);
+			//this.animations.add('shoot', [12, 13, 14, 15], 10, false);
 			this.animations.add('jump', [42, 43, 44], 10, false);
 			this.fallAnim = this.animations.add('fall', [45, 46, 47], 10, false);
 			// possibly add walking up/down the stairs
 
 			this.game.physics.arcade.enableBody(this);
+
+			// temporarily
 			this.body.collideWorldBounds = true;
 
 			this.isJumping = false;

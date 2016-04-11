@@ -1,11 +1,15 @@
 ﻿module TAVP {
 	export class Options extends Phaser.State {
 		bust: Phaser.Sprite;
+		background: Phaser.Image;
 		title: Phaser.Text;
 
 		menu: TAVP.Menu;
 
 		create() {
+			this.background = this.add.image(0, 0, 'bg');
+			this.background.sendToBack();
+
 			this.bust = this.add.sprite(0, 0, 'bust');
 			this.bust.y = this.world.centerY;
 

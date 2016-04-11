@@ -1,5 +1,5 @@
 ﻿module TAVP {
-	export class Level1 extends Phaser.State {
+	export class Level extends Phaser.State {
 		dialogue: TAVP.Dialogue;
 		player: TAVP.Player;
 
@@ -8,17 +8,17 @@
 				this,
 				[
 					'The Virtual Plaza is facing the greatest danger of all time.',
-					'Evil vaporwave prodigy called "☆★☆ 420" has appeared, wrecking havoc and destruction everywhere.'
+					'The ominous glitch wave is corrupting the reality and will consume everything and everyone on its path.',
+					'You have only one chance to escape.',
+					'Do not waste it.'
 				],
 				TAVP.Config.dialogueTextStyle,
 				'dialogueBox',
 				'dialoguePrompt');
 
-			this.player = new TAVP.Player(this.game, 50, 100);
+			this.player = new TAVP.Player(50, 100);
 
 			this.dialogue.start();
-
-
 		}
 
 		update() {

@@ -53,17 +53,22 @@
 			var tweenAlpha = this.add.tween(this.bust).to({ alpha: 1 }, 2000, Phaser.Easing.Linear.None, true);
 			tweenAlpha.onComplete.addOnce(() => { this.showAnyKey = true; });
 
+			var tween: Phaser.Tween;
+
 			this.input.keyboard.onDownCallback = () => {
-				if (this.alreadyEnded == false) {
+				if (!this.alreadyEnded) {
 					tweenAlpha.stop();
 					this.bust.alpha = 1;
 
 					this.pressAnyKey.visible = false;
 
-					var tween = this.add.tween(this.bust).to({ x: 0 }, 3500, Phaser.Easing.Linear.None, true);
+					tween = this.add.tween(this.bust).to({ x: 0 }, 3500, Phaser.Easing.Linear.None, true);
 					tween.onComplete.addOnce(() => this.game.state.start('MainMenu'));
 
 					this.alreadyEnded = true;
+				} else if (tween.isRunning) {
+					tween.stop();
+					this.game.state.start('MainMenu');
 				}
 			};
 

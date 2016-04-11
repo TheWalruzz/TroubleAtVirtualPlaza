@@ -8,10 +8,8 @@ window.onload = () => {
 	TAVP.Globals.game.state.add('Intro', TAVP.Intro);
 	TAVP.Globals.game.state.add('MainMenu', TAVP.MainMenu);
 	TAVP.Globals.game.state.add('Options', TAVP.Options);
-	TAVP.Globals.game.state.add('Cheats', TAVP.Cheats);
-
-	// levels below
-	TAVP.Globals.game.state.add('Level1', TAVP.Level1);
+	TAVP.Globals.game.state.add('NewGame', TAVP.NewGame);
+	TAVP.Globals.game.state.add('Level', TAVP.Level);
 
 	TAVP.Globals.game.state.start('Boot');
 };
