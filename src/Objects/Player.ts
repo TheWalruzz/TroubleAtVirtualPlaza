@@ -17,7 +17,6 @@
 
 			this.game.physics.arcade.enableBody(this);
 
-			// temporarily
 			this.body.collideWorldBounds = true;
 
 			this.isJumping = false;
@@ -34,14 +33,14 @@
 
 				if (!this.isJumping) {
 					if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
-						this.body.velocity.x = -30;
+						this.body.velocity.x = -50;
 						this.animations.play('run');
 
 						if (this.scale.x == 1)
 							this.scale.x = -1;
 					}
 					else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
-						this.body.velocity.x = 30;
+						this.body.velocity.x = 50;
 						this.animations.play('run');
 
 						if (this.scale.x == -1)
@@ -51,7 +50,7 @@
 						this.animations.play('idle');
 
 					if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
-						this.body.velocity.y = -45;
+						this.body.velocity.y = -65;
 						this.animations.play('jump');
 
 						this.isJumping = true;

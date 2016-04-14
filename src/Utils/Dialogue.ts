@@ -34,21 +34,28 @@
 			this.enterKey = this.caller.input.keyboard.addKey(Phaser.Keyboard.ENTER);
 
 			this.box = this.caller.add.sprite(0, 1, this.boxID);
-			this.box.x = this.caller.world.centerX - (this.box.width / 2);
+			this.box.x = (this.caller.game.width / 2) - (this.box.width / 2);
 			this.box.visible = false;
+			this.box.bringToTop();
+			this.box.fixedToCamera = true;
 
 			this.textLines = [null, null, null, null];
 			this.textLines[0] = this.caller.add.text(this.box.x + 3, 2, '', this.textStyle);
 			this.textLines[0].visible = false;
+			this.textLines[0].fixedToCamera = true;
 			for (var i = 1; i < 4; i++) {
 				this.textLines[i] = this.caller.add.text(this.box.x + 3, 2 + ((this.textLines[i - 1].height * 0.7) * i), '', this.textStyle);
 				this.textLines[i].visible = false;
+				this.textLines[i].bringToTop();
+				this.textLines[i].fixedToCamera = true;
 			}
 
 			this.prompt = this.caller.add.sprite(0, 0, this.promptID);
 			this.prompt.x = this.box.x + this.box.width - (this.prompt.width + 2);
 			this.prompt.y = this.box.y + this.box.height - (this.prompt.height + 2);
 			this.prompt.visible = false;
+			this.prompt.bringToTop();
+			this.prompt.fixedToCamera = true;
 
 			this.spaceKey.onDown.add(
 				() => {

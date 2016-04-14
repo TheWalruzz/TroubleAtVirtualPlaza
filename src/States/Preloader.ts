@@ -17,6 +17,8 @@
 			this.game.load.image('dialogueBox', 'res/dialogueBox.png');
 			this.game.load.image('dialoguePrompt', 'res/dialoguePrompt.png');
 			this.game.load.spritesheet('playerSprite', 'res/playerSprite.png', 16, 16);
+			this.game.load.image('tileset', 'res/tileset.png');
+			this.game.load.tilemap('level', 'res/level.json', null, Phaser.Tilemap.TILED_JSON);
 
 			// load webfonts
 			this.game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
@@ -26,7 +28,6 @@
 		}
 
 		create() {
-			//this.game.state.start('Intro');
 			this.game.time.events.add(Phaser.Timer.SECOND, () => TAVP.Globals.game.state.start('Intro'), this);
 		}
 
