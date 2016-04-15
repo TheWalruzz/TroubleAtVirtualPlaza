@@ -16,7 +16,7 @@
 			this.game.load.image('bg', 'res/background.png');
 			this.game.load.image('dialogueBox', 'res/dialogueBox.png');
 			this.game.load.image('dialoguePrompt', 'res/dialoguePrompt.png');
-			this.game.load.spritesheet('playerSprite', 'res/playerSprite.png', 16, 16);
+			this.game.load.spritesheet('playerSprite', 'res/player.png', 32, 32);
 			this.game.load.image('tileset', 'res/tileset.png');
 			this.game.load.tilemap('level', 'res/level.json', null, Phaser.Tilemap.TILED_JSON);
 

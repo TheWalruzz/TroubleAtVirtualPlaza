@@ -25,7 +25,7 @@
 		},
 
 		musicMuted: false,
-		gravityY: 50
+		gravityY: 110
 	};
 }
 

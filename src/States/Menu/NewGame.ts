@@ -45,9 +45,7 @@
 				this.world.centerY - 10,
 				[
 					'Regular',
-					'Super Speed',
-					'Super Jump',
-					'Real-life Ghost',
+					'Super Jump + Super Speed',
 					'Back'
 				],
 				TAVP.Config.menuStyle,
@@ -61,12 +59,6 @@
 				[
 					() => {
 						// possibly add different options (polymorphic objects defining each cheat as argument)
-						this.startNewGame();
-					},
-					() => {
-						this.startNewGame();
-					},
-					() => {
 						this.startNewGame();
 					},
 					() => {

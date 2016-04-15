@@ -16,7 +16,7 @@
 			// possibly add walking up/down the stairs
 
 			this.game.physics.arcade.enableBody(this);
-
+			this.body.setSize(15, 32, 0, 0);
 			this.body.collideWorldBounds = true;
 
 			this.isJumping = false;
@@ -33,14 +33,14 @@
 
 				if (!this.isJumping) {
 					if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
-						this.body.velocity.x = -50;
+						this.body.velocity.x = -60;
 						this.animations.play('run');
 
 						if (this.scale.x == 1)
 							this.scale.x = -1;
 					}
 					else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
-						this.body.velocity.x = 50;
+						this.body.velocity.x = 60;
 						this.animations.play('run');
 
 						if (this.scale.x == -1)
@@ -50,7 +50,7 @@
 						this.animations.play('idle');
 
 					if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
-						this.body.velocity.y = -65;
+						this.body.velocity.y = -107;
 						this.animations.play('jump');
 
 						this.isJumping = true;
