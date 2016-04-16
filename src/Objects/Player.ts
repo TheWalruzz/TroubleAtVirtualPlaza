@@ -12,10 +12,14 @@
 			this.animations.add('run', [4, 5, 6, 7, 8, 9, 10, 11], 10, true);
 			//this.animations.add('shoot', [12, 13, 14, 15], 10, false);
 			this.animations.add('jump', [42, 43, 44], 10, false);
+			this.animations.add('death', [16, 17, 18, 19, 20, 21, 22, 23], 10, false);
 			this.fallAnim = this.animations.add('fall', [45, 46, 47], 10, false);
 			// possibly add walking up/down the stairs
 
 			this.game.physics.arcade.enableBody(this);
+
+			// to make sure transparent pixels on player's sprite aren't colliding with anything
+			// we just create thinner collision box
 			this.body.setSize(15, 32, 0, 0);
 			this.body.collideWorldBounds = true;
 
@@ -58,7 +62,7 @@
 				}
 				else {
 					if (this.animations.currentAnim == this.fallAnim)
-						if (this.body.velocity.y == 0)
+						if (this.body.velocity.y <= 0)
 							this.isJumping = false;
 
 					if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT) && this.scale.x == -1)

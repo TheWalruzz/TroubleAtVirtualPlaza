@@ -5,6 +5,7 @@
 		map: Phaser.Tilemap;
 		bgLayer: Phaser.TilemapLayer;
 		blockedLayer: Phaser.TilemapLayer;
+		elevators: Phaser.Group;
 
 		private findObjectsByType(typeName, map, layer) {
 			var result = new Array();
@@ -20,6 +21,18 @@
 			return result;
 		}
 
+		private createElevators() {
+			this.elevators = this.game.add.group();
+
+			var result = this.findObjectsByType('glitchElevator', this.map, 'Objects');
+			result.forEach(
+				(element) => {
+					var elevator = new GlitchElevator(element.x, element.y, element.y + (+element.properties.maxMove), 20);
+					this.elevators.add(elevator);
+				}
+			);
+		}
+
 		create() {
 			this.map = this.game.add.tilemap('level');
 			this.map.addTilesetImage('Tiles', 'tileset');
@@ -32,6 +45,8 @@
 			var result = this.findObjectsByType('playerStart', this.map, 'Objects');
 			this.player = new TAVP.Player(result[0].x, result[0].y);
 			this.game.camera.follow(this.player);
+
+			this.createElevators();
 
 			this.dialogue = new TAVP.Dialogue(
 				this,
@@ -49,6 +64,7 @@
 
 		update() {
 			this.game.physics.arcade.collide(this.player, this.blockedLayer);
+			this.game.physics.arcade.collide(this.player, this.elevators);
 		}
 
 		render() { TAVP.Utilities.render(); }

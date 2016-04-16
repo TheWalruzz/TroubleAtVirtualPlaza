@@ -19,6 +19,7 @@
 			this.game.load.spritesheet('playerSprite', 'res/player.png', 32, 32);
 			this.game.load.image('tileset', 'res/tileset.png');
 			this.game.load.tilemap('level', 'res/level.json', null, Phaser.Tilemap.TILED_JSON);
+			this.game.load.spritesheet('glitchElevator', 'res/glitch_elevator.png', 16, 7);
 
 			// load webfonts
 			this.game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
