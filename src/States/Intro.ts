@@ -53,8 +53,6 @@
 			var tweenAlpha = this.add.tween(this.bust).to({ alpha: 1 }, 2000, Phaser.Easing.Linear.None, true);
 			tweenAlpha.onComplete.addOnce(() => { this.showAnyKey = true; });
 
-			
-
 			this.input.keyboard.onDownCallback = () => {
 				if (!this.alreadyEnded) {
 					tweenAlpha.stop();

@@ -75,6 +75,22 @@
                  "width":0,
                  "x":513,
                  "y":1568
+                }, 
+                {
+                 "gid":83,
+                 "height":0,
+                 "id":8,
+                 "name":"",
+                 "properties":
+                    {
+                     "type":"bust"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":110,
+                 "y":1517
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -83,7 +99,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":8,
+ "nextobjectid":9,
  "orientation":"orthogonal",
  "properties":
     {

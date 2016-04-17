@@ -2,10 +2,13 @@
 	export class Level extends Phaser.State {
 		dialogue: TAVP.Dialogue;
 		player: TAVP.Player;
+
 		map: Phaser.Tilemap;
 		bgLayer: Phaser.TilemapLayer;
 		blockedLayer: Phaser.TilemapLayer;
+
 		elevators: Phaser.Group;
+		busts: Phaser.Group;
 
 		private findObjectsByType(typeName, map, layer) {
 			var result = new Array();
@@ -33,6 +36,18 @@
 			);
 		}
 
+		private createBusts() {
+			this.busts = this.game.add.group();
+
+			var result = this.findObjectsByType('bust', this.map, 'Objects');
+			result.forEach(
+				(element) => {
+					var bust = new Bust(element.x, element.y);
+					this.busts.add(bust);
+				}
+			);
+		}
+
 		create() {
 			this.map = this.game.add.tilemap('level');
 			this.map.addTilesetImage('Tiles', 'tileset');
@@ -47,6 +62,7 @@
 			this.game.camera.follow(this.player);
 
 			this.createElevators();
+			this.createBusts();
 
 			this.dialogue = new TAVP.Dialogue(
 				this,
@@ -65,6 +81,8 @@
 		update() {
 			this.game.physics.arcade.collide(this.player, this.blockedLayer);
 			this.game.physics.arcade.collide(this.player, this.elevators);
+			this.game.physics.arcade.collide(this.busts, this.blockedLayer);
+			// TODO: add collision of bust with player that e.g. reduce player's health
 		}
 
 		render() { TAVP.Utilities.render(); }
