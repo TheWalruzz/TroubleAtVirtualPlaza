@@ -15,26 +15,32 @@
 		}
 
 		update() {
-			if (this.body.onFloor() && !this.isWaiting) {
-				this.isWaiting = true;
+			if (!TAVP.Globals.paused) {
+				this.body.enabled = true;
 
-				this.game.time.events.add(Phaser.Timer.SECOND * 2,
-					() => {
-						this.body.velocity.y = -85;
-						this.isWaiting = false;
-						this.isJumping = true;
-					},
-					this);
-			} else if (this.body.velocity.y >= 0 && this.isJumping) {
-				this.body.allowGravity = false;
-				this.isJumping = false;
+				if (this.body.onFloor() && !this.isWaiting) {
+					this.isWaiting = true;
 
-				this.game.time.events.add(Phaser.Timer.SECOND,
-					() => {
-						this.body.allowGravity = true;
-						this.body.velocity.y = 150;
-					},
-					this);
+					this.game.time.events.add(Phaser.Timer.SECOND * 2,
+						() => {
+							this.body.velocity.y = -90;
+							this.isWaiting = false;
+							this.isJumping = true;
+						},
+						this);
+				} else if (this.body.velocity.y >= 0 && this.isJumping) {
+					this.body.allowGravity = false;
+					this.isJumping = false;
+
+					this.game.time.events.add(Phaser.Timer.SECOND,
+						() => {
+							this.body.allowGravity = true;
+							this.body.velocity.y = 150;
+						},
+						this);
+				}
+			} else {
+				this.body.enabled = false;
 			}
 		}
 	}

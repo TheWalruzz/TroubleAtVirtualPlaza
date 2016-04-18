@@ -23,10 +23,16 @@
 		}
 
 		update() {
-			this.body.velocity.y = -this.speed;
+			if (!TAVP.Globals.paused) {
+				this.body.enabled = true;
 
-			if (this.y <= this.endY) {
-				this.y = this.startY
+				this.body.velocity.y = -this.speed;
+
+				if (this.y <= this.endY) {
+					this.y = this.startY
+				}
+			} else {
+				this.body.enabled = false;
 			}
 		}
 	}
