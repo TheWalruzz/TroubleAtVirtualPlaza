@@ -1,5 +1,5 @@
 ﻿module TAVP {
-	export class Bust extends Phaser.Sprite {
+	export class RisingBust extends Phaser.Sprite {
 		isWaiting: boolean;
 		isJumping: boolean;
 
