@@ -2,6 +2,7 @@
 	export class Player extends Phaser.Sprite {
 		isJumping: boolean;
 		fallAnim: Phaser.Animation;
+		lifeManager: TAVP.LifeManager;
 
 		constructor(x: number, y: number) {
 			super(TAVP.Globals.game, x, y, 'playerSprite');
@@ -25,6 +26,19 @@
 
 			this.isJumping = false;
 
+			this.lifeManager = new LifeManager(TAVP.Globals.game);
+			this.lifeManager.hide();
+
+			this.game.time.events.loop(0.1 * Phaser.Timer.SECOND,
+				() => {
+					if (this.lifeManager.isInvincible) {
+						this.visible = !this.visible;
+					} else if (!this.visible) {
+						this.visible = true;
+					}
+				},
+				this);
+
 			this.game.add.existing(this);
 		}
 
@@ -32,6 +46,7 @@
 			if (!TAVP.Globals.paused) {
 				// so it works after being paused
 				this.body.enable = true;
+				this.lifeManager.show();
 
 				this.body.velocity.x = 0;
 
@@ -65,10 +80,13 @@
 						if (this.body.velocity.y <= 0)
 							this.isJumping = false;
 
-					if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT) && this.scale.x == -1)
+					if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
+						this.scale.x = -1;
 						this.body.velocity.x = -30;
-					else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT) && this.scale.x == 1)
+					} else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
+						this.scale.x = 1;
 						this.body.velocity.x = 30;
+					}
 				}
 
 				// so it always changes animation to falling when player is, well... falling

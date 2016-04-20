@@ -5,19 +5,20 @@
 
 		private hearts: Phaser.Group;
 
-		constructor() {
-			this.hearts = TAVP.Globals.game.add.group();
+		constructor(game: Phaser.Game) {
+			this.hearts = game.add.group();
 			this.hearts.fixedToCamera = true;
 
 			this.hp = TAVP.Config.maxHearts;
 			this.isInvincible = false;
 
 			for (var i = 0; i < TAVP.Config.maxHearts; i++) {
-				var sprite = new Phaser.Sprite(TAVP.Globals.game, i * 16, 0, 'heart', 0);
+				var sprite = new Phaser.Sprite(game, i * 16, 0, 'heart', 0);
 				this.hearts.add(sprite);
 			}
 
-			TAVP.Globals.game.add.existing(this.hearts);
+			game.add.existing(this.hearts);
+			game.world.bringToTop(this.hearts);
 		}
 
 		// returns true if the hp is down to zero, false otherwise

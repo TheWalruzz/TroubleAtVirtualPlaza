@@ -2,7 +2,6 @@
 	export class Level extends Phaser.State {
 		dialogue: TAVP.Dialogue;
 		player: TAVP.Player;
-		lifeManager: TAVP.LifeManager;
 
 		map: Phaser.Tilemap;
 		bgLayer: Phaser.TilemapLayer;
@@ -77,32 +76,15 @@
 				'dialogueBox',
 				'dialoguePrompt');
 			this.dialogue.start();
-
-			this.lifeManager = new TAVP.LifeManager();
-			this.lifeManager.hide();
-
-			this.game.time.events.loop(0.15 * Phaser.Timer.SECOND,
-				() => {
-					if (this.lifeManager.isInvincible) {
-						this.player.visible = !this.player.visible;
-					} else if (!this.player.visible) {
-						this.player.visible = true;
-					}
-				},
-				this);
 		}
 
 		update() {
-			if (!this.dialogue.active) {
-				this.lifeManager.show();
-			}
-
 			this.game.physics.arcade.collide(this.player, this.blockedLayer);
 			this.game.physics.arcade.collide(this.player, this.elevators);
 			this.game.physics.arcade.collide(this.busts, this.blockedLayer);
 			this.game.physics.arcade.collide(this.player, this.busts, null, 
 				(player, bust) => {
-					if (this.lifeManager.decreaseLife()) {
+					if (this.player.lifeManager.decreaseLife()) {
 						// whoops! you're dead!
 						// TODO: add text about losing or something
 					}
