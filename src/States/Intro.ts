@@ -81,7 +81,7 @@
 
 			TAVP.Globals.music = this.add.audio('introMusic');
 			TAVP.Globals.music.loop = true;
-			TAVP.Globals.music.play();
+			TAVP.Utilities.playMusic('introMusic');
 		}
 
 		update() {

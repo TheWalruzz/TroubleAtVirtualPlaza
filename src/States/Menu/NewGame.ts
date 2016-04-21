@@ -9,7 +9,7 @@
 
 		// TODO: add argument defining cheat to be used in the level
 		private startNewGame() {
-			if (!TAVP.Config.musicMuted) {
+			if (!TAVP.Globals.musicMuted) {
 				TAVP.Globals.music.fadeOut(1000);
 				TAVP.Globals.music.onFadeComplete.addOnce(() => TAVP.Globals.music.stop());
 			}

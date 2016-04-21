@@ -5,6 +5,7 @@
 		static game: Phaser.Game;
 		static music: Phaser.Sound;
 		static paused: boolean = false;
+		static musicMuted: boolean = true;
 	}
 
 	export var Flags = {

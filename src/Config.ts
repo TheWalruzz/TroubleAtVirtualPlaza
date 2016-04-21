@@ -24,7 +24,6 @@
 			strokeThickness: 3
 		},
 
-		musicMuted: false,
 		gravityY: 110,
 		maxHearts: 4
 	};

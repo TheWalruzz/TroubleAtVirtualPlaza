@@ -28,7 +28,7 @@
 				this.world.centerX,
 				this.world.centerY - 10,
 				[
-					'Music: ' + ((TAVP.Config.musicMuted) ? 'Off' : 'On'),
+					'Music: ' + ((TAVP.Globals.musicMuted) ? 'Off' : 'On'),
 					'Back'
 				],
 				TAVP.Config.menuStyle,
@@ -37,10 +37,10 @@
 			this.menu.setCallbacks(
 				[
 					() => {
-						TAVP.Config.musicMuted = !TAVP.Config.musicMuted;
+						TAVP.Globals.musicMuted = !TAVP.Globals.musicMuted;
 						TAVP.Utilities.playMusic('introMusic');
 
-						this.menu.options[0].text = 'Music: ' + ((TAVP.Config.musicMuted) ? 'Off' : 'On');
+						this.menu.options[0].text = 'Music: ' + ((TAVP.Globals.musicMuted) ? 'Off' : 'On');
 					},
 					() => this.game.state.start('MainMenu')]);
 		}

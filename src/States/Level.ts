@@ -95,9 +95,11 @@
 			this.game.physics.arcade.collide(this.player, this.elevators);
 			this.game.physics.arcade.collide(this.player, this.enemies, null, 
 				(player, enemy) => {
-					if (this.player.lifeManager.decreaseLife()) {
+					if (this.player.lifeManager.decreaseLife() || this.game.input.keyboard.isDown(Phaser.Keyboard.B)) {
 						// whoops! you're dead!
 						// TODO: add text about losing or something
+						console.log('Dead as dead can be!');
+						this.game.state.start('MainMenu');
 					}
 				}, this);
 			this.game.physics.arcade.collide(this.enemies, this.enemyBounds,

@@ -10,7 +10,7 @@
 		},
 
 		playMusic: function (soundName: string) {
-			if (!TAVP.Config.musicMuted) {
+			if (!TAVP.Globals.musicMuted) {
 				if (!TAVP.Globals.music.isPlaying) {
 					if (TAVP.Globals.music.name == soundName)
 						TAVP.Globals.music.play();

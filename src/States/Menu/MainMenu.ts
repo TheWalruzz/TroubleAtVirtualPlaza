@@ -14,6 +14,10 @@
 
 			TAVP.Utilities.playMusic('introMusic');
 
+			// so that main menu shows properly after getting back from the actual game
+			this.world.width = this.game.width;
+			this.world.height = this.game.height;
+
 			this.background = this.add.image(0, 0, 'bg');
 			this.background.sendToBack();
 
