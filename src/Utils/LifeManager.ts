@@ -13,7 +13,8 @@
 			this.isInvincible = false;
 
 			for (var i = 0; i < TAVP.Config.maxHearts; i++) {
-				var sprite = new Phaser.Sprite(game, i * 16, 0, 'heart', 0);
+				var sprite = new Phaser.Sprite(game, 0, 0, 'heart', 0);
+				sprite.x = i * sprite.width;
 				this.hearts.add(sprite);
 			}
 

@@ -7,6 +7,8 @@
 		constructor(x: number, y: number) {
 			super(TAVP.Globals.game, x, y, 'playerSprite');
 
+			this.smoothed = false;
+
 			this.anchor.setTo(0.5, 0.5);
 
 			this.animations.add('idle', [0, 1, 2, 3, 2, 1], 10, true);

@@ -6,17 +6,16 @@
 		map: Phaser.Tilemap;
 		bgLayer: Phaser.TilemapLayer;
 		blockedLayer: Phaser.TilemapLayer;
+		enemyBounds: Phaser.TilemapLayer;
 
 		elevators: Phaser.Group;
-		busts: Phaser.Group;
+		enemies: Phaser.Group;
 
 		private findObjectsByType(typeName, map, layer) {
 			var result = new Array();
-			map.objects[layer].forEach(function (element) {
+			map.objects[layer].forEach((element) => {
 				if (element.properties.type === typeName) {
 					//Phaser uses top left, Tiled bottom left so we have to adjust the y position
-					//also keep in mind that the cup images are a bit smaller than the tile which is 16x16
-					//so they might not be placed in the exact pixel position as in Tiled
 					element.y -= map.tileHeight;
 					result.push(element);
 				}
@@ -36,33 +35,46 @@
 			);
 		}
 
-		private createBusts() {
-			this.busts = this.game.add.group();
+		private createEnemies() {
+			this.enemies = this.game.add.group();
 
-			var result = this.findObjectsByType('bust', this.map, 'Objects');
+			var result = this.findObjectsByType('risingBust', this.map, 'Objects');
 			result.forEach(
 				(element) => {
 					var bust = new RisingBust(element.x, element.y);
-					this.busts.add(bust);
+					this.enemies.add(bust);
+				}
+			);
+
+			result = this.findObjectsByType('walkingEnemy', this.map, 'Objects');
+			result.forEach(
+				(element) => {
+					var enemy = new WalkingEnemy(element.x, element.y);
+					this.enemies.add(enemy);
 				}
 			);
 		}
+
 
 		create() {
 			this.map = this.game.add.tilemap('level');
 			this.map.addTilesetImage('Tiles', 'tileset');
 			this.bgLayer = this.map.createLayer('Background');
 			this.blockedLayer = this.map.createLayer('Blocking');
+			this.enemyBounds = this.map.createLayer('EnemyBounds');
 
 			this.map.setCollisionBetween(1, 50, true, 'Blocking');
 			this.bgLayer.resizeWorld();
+
+			this.map.setCollision(81, true, 'EnemyBounds');
+			this.enemyBounds.visible = false;
 
 			var result = this.findObjectsByType('playerStart', this.map, 'Objects');
 			this.player = new TAVP.Player(result[0].x, result[0].y);
 			this.game.camera.follow(this.player);
 
 			this.createElevators();
-			this.createBusts();
+			this.createEnemies();
 
 			this.dialogue = new TAVP.Dialogue(
 				this,
@@ -81,14 +93,21 @@
 		update() {
 			this.game.physics.arcade.collide(this.player, this.blockedLayer);
 			this.game.physics.arcade.collide(this.player, this.elevators);
-			this.game.physics.arcade.collide(this.busts, this.blockedLayer);
-			this.game.physics.arcade.collide(this.player, this.busts, null, 
-				(player, bust) => {
+			this.game.physics.arcade.collide(this.player, this.enemies, null, 
+				(player, enemy) => {
 					if (this.player.lifeManager.decreaseLife()) {
 						// whoops! you're dead!
 						// TODO: add text about losing or something
 					}
 				}, this);
+			this.game.physics.arcade.collide(this.enemies, this.enemyBounds,
+				(enemy, bound) => {
+					if (enemy.changeDirection != null) {
+						enemy.changeDirection();
+					}
+				});
+			// collider below HAS to be on line below, or otherwise walking enemies don't change directions correctly
+			this.game.physics.arcade.collide(this.enemies, this.blockedLayer);
 		}
 
 		render() { TAVP.Utilities.render(); }
