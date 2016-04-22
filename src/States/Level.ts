@@ -2,6 +2,7 @@
 	export class Level extends Phaser.State {
 		dialogue: TAVP.Dialogue;
 		player: TAVP.Player;
+		glitchWave: TAVP.GlitchWave;
 
 		map: Phaser.Tilemap;
 		bgLayer: Phaser.TilemapLayer;
@@ -94,10 +95,20 @@
 				}
 			);
 			this.dialogue.start();
+
+			this.glitchWave = new GlitchWave();
 		}
 
 		update() {
 			if (this.game.input.keyboard.isDown(Phaser.Keyboard.ESC)) {
+				this.game.state.start('MainMenu');
+			}
+
+			if (this.glitchWave.checkOverlap(this.player.x + (this.player.body.x / 2),
+				this.player.y + this.player.height)) {
+				// whoops! you're dead!
+				// TODO: add graphical indication about losing
+				console.log('Glitchwave got you!');
 				this.game.state.start('MainMenu');
 			}
 

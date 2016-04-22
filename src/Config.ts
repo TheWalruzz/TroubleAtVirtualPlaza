@@ -25,7 +25,8 @@
 		},
 
 		gravityY: 110,
-		maxHearts: 4
+		maxHearts: 4,
+		glitchWaveSpreadTime: 0.25 * Phaser.Timer.SECOND
 	};
 }
 
