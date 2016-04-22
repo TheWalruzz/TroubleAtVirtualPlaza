@@ -1,12 +1,12 @@
 ﻿module TAVP {
-	export class GlitchWave extends Phaser.Sprite {
+	export class GlitchWave extends Phaser.TileSprite {
 		upperBound: Phaser.Point;
 		lowerBound: Phaser.Point;
 
 		cutMask: PIXI.Graphics;
 
 		constructor() {
-			super(TAVP.Globals.game, 0, 0, 'noise');
+			super(TAVP.Globals.game, 0, 0, TAVP.Globals.game.world.width, TAVP.Globals.game.world.height, 'noise');
 
 			this.animations.add('loop', [0, 1], 10, true);
 			this.animations.play('loop');
@@ -57,11 +57,9 @@
 
 						this.cutMask.endFill();
 						this.mask = this.cutMask;
-						this.bringToTop();
 					}
 				});
 
-			this.bringToTop();
 			this.game.add.existing(this);
 		}
 
