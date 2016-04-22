@@ -55,7 +55,6 @@
 			);
 		}
 
-
 		create() {
 			this.map = this.game.add.tilemap('level');
 			this.map.addTilesetImage('Tiles', 'tileset');
@@ -70,11 +69,14 @@
 			this.enemyBounds.visible = false;
 
 			var result = this.findObjectsByType('playerStart', this.map, 'Objects');
-			this.player = new TAVP.Player(result[0].x, result[0].y);
+			this.player = new TAVP.Player(result[0].x, result[0].y,
+				((TAVP.Globals.gameMode != GameMode.GodSuperSpeed) ? 60 : 500));
 			this.game.camera.follow(this.player);
 
 			this.createElevators();
-			this.createEnemies();
+			if (TAVP.Globals.gameMode != GameMode.NoEnemiesJumpOnly) {
+				this.createEnemies();
+			}
 
 			this.dialogue = new TAVP.Dialogue(
 				this,
@@ -86,30 +88,38 @@
 				],
 				TAVP.Config.dialogueTextStyle,
 				'dialogueBox',
-				'dialoguePrompt');
+				'dialoguePrompt',
+				() => {
+					this.player.lifeManager.show();
+				}
+			);
 			this.dialogue.start();
 		}
 
 		update() {
 			this.game.physics.arcade.collide(this.player, this.blockedLayer);
 			this.game.physics.arcade.collide(this.player, this.elevators);
-			this.game.physics.arcade.collide(this.player, this.enemies, null, 
-				(player, enemy) => {
-					if (this.player.lifeManager.decreaseLife() || this.game.input.keyboard.isDown(Phaser.Keyboard.B)) {
-						// whoops! you're dead!
-						// TODO: add text about losing or something
-						console.log('Dead as dead can be!');
-						this.game.state.start('MainMenu');
-					}
-				}, this);
-			this.game.physics.arcade.collide(this.enemies, this.enemyBounds,
-				(enemy, bound) => {
-					if (enemy.changeDirection != null) {
-						enemy.changeDirection();
-					}
-				});
-			// collider below HAS to be on line below, or otherwise walking enemies don't change directions correctly
-			this.game.physics.arcade.collide(this.enemies, this.blockedLayer);
+
+			if (TAVP.Globals.gameMode != GameMode.NoEnemiesJumpOnly) {
+				this.game.physics.arcade.collide(this.player, this.enemies, null,
+					(player, enemy) => {
+						if (TAVP.Globals.gameMode != GameMode.GodSuperSpeed
+							&& this.player.lifeManager.decreaseLife()) {
+							// whoops! you're dead!
+							// TODO: add graphical indication about losing
+							console.log('Dead as dead can be!');
+							this.game.state.start('MainMenu');
+						}
+					}, this);
+				this.game.physics.arcade.collide(this.enemies, this.enemyBounds,
+					(enemy, bound) => {
+						if (enemy.changeDirection != null) {
+							enemy.changeDirection();
+						}
+					});
+				// collider below HAS to be on line below, or otherwise walking enemies don't change directions correctly
+				this.game.physics.arcade.collide(this.enemies, this.blockedLayer);
+			}
 		}
 
 		render() { TAVP.Utilities.render(); }

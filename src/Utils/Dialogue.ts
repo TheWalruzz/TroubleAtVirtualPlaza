@@ -19,9 +19,11 @@
 		timer: Phaser.TimerEvent;
 		promptTimer: Phaser.TimerEvent;
 
+		stopCallback: () => void;
+
 		active: boolean;
 
-		constructor(caller: Phaser.State, texts: string[], textStyle: {}, boxID: string, promptID: string) {
+		constructor(caller: Phaser.State, texts: string[], textStyle: {}, boxID: string, promptID: string, stopCallback: () => void) {
 			this.caller = caller;
 			this.texts = texts;
 			this.boxID = boxID;
@@ -90,6 +92,8 @@
 					}
 				},
 				this.caller);
+
+			this.stopCallback = stopCallback;
 		}
 
 		start() {
@@ -159,6 +163,8 @@
 
 			this.spaceKey.reset(false);
 			this.enterKey.reset(false);
+
+			this.stopCallback();
 		}
 
 		// quick'n'dirty implementation, but it works.

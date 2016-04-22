@@ -45,7 +45,8 @@
 				this.world.centerY - 10,
 				[
 					'Regular',
-					'Super Jump + Super Speed',
+					'God mode/Super speed',
+					'No enemies/Jump only',
 					'Back'
 				],
 				TAVP.Config.menuStyle,
@@ -58,13 +59,19 @@
 			this.menu.setCallbacks(
 				[
 					() => {
-						// possibly add different options (polymorphic objects defining each cheat as argument)
+						TAVP.Globals.gameMode = GameMode.Regular;
 						this.startNewGame();
 					},
 					() => {
+						TAVP.Globals.gameMode = GameMode.GodSuperSpeed;
 						this.startNewGame();
 					},
-					() => this.game.state.start('MainMenu')]);
+					() => {
+						TAVP.Globals.gameMode = GameMode.NoEnemiesJumpOnly;
+						this.startNewGame();
+					},
+					() => this.game.state.start('MainMenu')
+				]);
 		}
 
 		update() {

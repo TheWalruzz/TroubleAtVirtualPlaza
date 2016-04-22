@@ -4,7 +4,9 @@
 		fallAnim: Phaser.Animation;
 		lifeManager: TAVP.LifeManager;
 
-		constructor(x: number, y: number) {
+		moveSpeed: number;
+
+		constructor(x: number, y: number, moveSpeed: number) {
 			super(TAVP.Globals.game, x, y, 'playerSprite');
 
 			this.smoothed = false;
@@ -41,6 +43,8 @@
 				},
 				this);
 
+			this.moveSpeed = moveSpeed;
+
 			this.game.add.existing(this);
 		}
 
@@ -48,27 +52,29 @@
 			if (!TAVP.Globals.paused) {
 				// so it works after being paused
 				this.body.enable = true;
-				this.lifeManager.show();
 
 				this.body.velocity.x = 0;
 
 				if (!this.isJumping) {
-					if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
-						this.body.velocity.x = -60;
+					if (TAVP.Globals.gameMode != GameMode.NoEnemiesJumpOnly
+						&& this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
+						this.body.velocity.x = -this.moveSpeed;
 						this.animations.play('run');
 
-						if (this.scale.x == 1)
+						if (this.scale.x == 1) {
 							this.scale.x = -1;
-					}
-					else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
-						this.body.velocity.x = 60;
+						}
+					} else if (TAVP.Globals.gameMode != GameMode.NoEnemiesJumpOnly
+						&& this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
+						this.body.velocity.x = this.moveSpeed;
 						this.animations.play('run');
 
-						if (this.scale.x == -1)
+						if (this.scale.x == -1) {
 							this.scale.x = 1;
-					}
-					else
+						}
+					} else {
 						this.animations.play('idle');
+					}
 
 					if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
 						this.body.velocity.y = -107;
@@ -84,10 +90,10 @@
 
 					if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
 						this.scale.x = -1;
-						this.body.velocity.x = -30;
+						this.body.velocity.x = -(this.moveSpeed / 2);
 					} else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
 						this.scale.x = 1;
-						this.body.velocity.x = 30;
+						this.body.velocity.x = (this.moveSpeed / 2);
 					}
 				}
 
