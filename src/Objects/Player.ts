@@ -90,10 +90,10 @@
 
 					if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
 						this.scale.x = -1;
-						this.body.velocity.x = -(this.moveSpeed / 2);
+						this.body.velocity.x = -30;
 					} else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
 						this.scale.x = 1;
-						this.body.velocity.x = (this.moveSpeed / 2);
+						this.body.velocity.x = 30;
 					}
 				}
 

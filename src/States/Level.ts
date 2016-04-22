@@ -97,6 +97,10 @@
 		}
 
 		update() {
+			if (this.game.input.keyboard.isDown(Phaser.Keyboard.ESC)) {
+				this.game.state.start('MainMenu');
+			}
+
 			this.game.physics.arcade.collide(this.player, this.blockedLayer);
 			this.game.physics.arcade.collide(this.player, this.elevators);
 
