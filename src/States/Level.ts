@@ -3,6 +3,7 @@
 		dialogue: TAVP.Dialogue;
 		player: TAVP.Player;
 		glitchWave: TAVP.GlitchWave;
+		messageScreen: TAVP.MessageScreen;
 
 		map: Phaser.Tilemap;
 		bgLayer: Phaser.TilemapLayer;
@@ -110,6 +111,11 @@
 			this.dialogue.start();
 
 			this.glitchWave = new GlitchWave();
+			this.messageScreen = new MessageScreen(
+				() => {
+					this.input.keyboard.onDownCallback = null;
+					this.game.state.start('MainMenu');
+				});
 		}
 
 		update() {
@@ -120,17 +126,13 @@
 			this.game.physics.arcade.overlap(this.player, this.exit,
 				() => {
 					// you won! conratulations!
-					// TODO: add proper winning message
-					console.log('You won!');
-					this.game.state.start('MainMenu');
+					this.messageScreen.show('Congratulations!\nYou Win!');
 				}
 			);
 
 			if (this.glitchWave.checkOverlap(this.player.body.x, this.player.body.y + this.player.height)) {
 				// whoops! you're dead!
-				// TODO: add graphical indication about losing
-				console.log('Glitchwave got you!');
-				this.game.state.start('MainMenu');
+				this.messageScreen.show('You Lose');
 			}
 
 			this.game.physics.arcade.collide(this.player, this.blockedLayer);
@@ -142,9 +144,7 @@
 						if (TAVP.Globals.gameMode != GameMode.GodSuperSpeed
 							&& this.player.lifeManager.decreaseLife()) {
 							// whoops! you're dead!
-							// TODO: add graphical indication about losing
-							console.log('Dead as dead can be!');
-							this.game.state.start('MainMenu');
+							this.messageScreen.show('You Lose');
 						}
 					}, this);
 				this.game.physics.arcade.collide(this.enemies, this.enemyBounds,

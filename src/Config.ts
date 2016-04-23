@@ -24,6 +24,14 @@
 			strokeThickness: 3
 		},
 
+		messageStyle: {
+			font: 'VT323',
+			stroke: '#000000',
+			strokeThickness: 4,
+			fill: '#ffffff',
+			fontSize: 20
+		},
+
 		gravityY: 110,
 		maxHearts: 4,
 		glitchWaveSpreadTime: 0.25 * Phaser.Timer.SECOND

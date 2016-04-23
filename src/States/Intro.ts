@@ -61,11 +61,16 @@
 					this.pressAnyKey.visible = false;
 
 					var tween = this.add.tween(this.bust).to({ x: 0 }, 3500, Phaser.Easing.Linear.None, true);
-					tween.onComplete.addOnce(() => this.game.state.start('MainMenu'));
+					tween.onComplete.addOnce(
+						() => {
+							this.input.keyboard.onDownCallback = null;
+							this.game.state.start('MainMenu');
+						});
 
 					this.alreadyEnded = true;
 				} else if (!TAVP.Flags.mainMenuVisited) {
 					TAVP.Flags.mainMenuVisited = true;
+					this.input.keyboard.onDownCallback = null;
 					this.game.state.start('MainMenu');
 				}
 			};
