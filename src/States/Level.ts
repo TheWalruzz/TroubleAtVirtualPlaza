@@ -104,8 +104,7 @@
 				this.game.state.start('MainMenu');
 			}
 
-			if (this.glitchWave.checkOverlap(this.player.x + (this.player.body.x / 2),
-				this.player.y + this.player.height)) {
+			if (this.glitchWave.checkOverlap(this.player.body.x, this.player.body.y + this.player.height)) {
 				// whoops! you're dead!
 				// TODO: add graphical indication about losing
 				console.log('Glitchwave got you!');
