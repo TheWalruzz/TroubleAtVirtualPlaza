@@ -9,7 +9,7 @@
 		blockedLayer: Phaser.TilemapLayer;
 		enemyBounds: Phaser.TilemapLayer;
 
-		elevators: Phaser.Group;
+		platforms: Phaser.Group;
 		enemies: Phaser.Group;
 
 		private findObjectsByType(typeName, map, layer) {
@@ -24,14 +24,14 @@
 			return result;
 		}
 
-		private createElevators() {
-			this.elevators = this.game.add.group();
+		private createPlatforms() {
+			this.platforms = this.game.add.group();
 
 			var result = this.findObjectsByType('glitchElevator', this.map, 'Objects');
 			result.forEach(
 				(element) => {
 					var elevator = new GlitchElevator(element.x, element.y, element.y + (+element.properties.maxMove), 20);
-					this.elevators.add(elevator);
+					this.platforms.add(elevator);
 				}
 			);
 		}
@@ -74,7 +74,7 @@
 				((TAVP.Globals.gameMode != GameMode.GodSuperSpeed) ? 60 : 500));
 			this.game.camera.follow(this.player);
 
-			this.createElevators();
+			this.createPlatforms();
 			if (TAVP.Globals.gameMode != GameMode.NoEnemiesJumpOnly) {
 				this.createEnemies();
 			}
@@ -112,7 +112,7 @@
 			}
 
 			this.game.physics.arcade.collide(this.player, this.blockedLayer);
-			this.game.physics.arcade.collide(this.player, this.elevators);
+			this.game.physics.arcade.collide(this.player, this.platforms);
 
 			if (TAVP.Globals.gameMode != GameMode.NoEnemiesJumpOnly) {
 				this.game.physics.arcade.collide(this.player, this.enemies, null,
