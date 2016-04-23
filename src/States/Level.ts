@@ -4,6 +4,7 @@
 		player: TAVP.Player;
 		glitchWave: TAVP.GlitchWave;
 		messageScreen: TAVP.MessageScreen;
+		timerText: TAVP.Timer;
 
 		map: Phaser.Tilemap;
 		bgLayer: Phaser.TilemapLayer;
@@ -13,6 +14,7 @@
 		platforms: Phaser.Group;
 		enemies: Phaser.Group;
 		exit: Phaser.Sprite;
+		timer: Phaser.Timer;
 
 		private findObjectsByType(typeName, map, layer) {
 			var result = new Array();
@@ -106,6 +108,7 @@
 				'dialoguePrompt',
 				() => {
 					this.player.lifeManager.show();
+					this.timerText.startTimer();
 				}
 			);
 			this.dialogue.start();
@@ -116,6 +119,8 @@
 					this.input.keyboard.onDownCallback = null;
 					this.game.state.start('MainMenu');
 				});
+
+			this.timerText = new TAVP.Timer();
 		}
 
 		update() {
@@ -125,13 +130,18 @@
 
 			this.game.physics.arcade.overlap(this.player, this.exit,
 				() => {
-					// you won! conratulations!
-					this.messageScreen.show('Congratulations!\nYou Win!');
+					// you won! congratulations!
+					this.player.lifeManager.hide();
+					var timeElapsed = this.timerText.getTimeString();
+					this.timerText.stopTimer();
+					this.messageScreen.show('Congratulations!\nYou Win!\nYour time: ' + timeElapsed + 's');
 				}
 			);
 
 			if (this.glitchWave.checkOverlap(this.player.body.x, this.player.body.y + this.player.height)) {
 				// whoops! you're dead!
+				this.player.lifeManager.hide();
+				this.timerText.stopTimer();
 				this.messageScreen.show('You Lose');
 			}
 
@@ -144,6 +154,8 @@
 						if (TAVP.Globals.gameMode != GameMode.GodSuperSpeed
 							&& this.player.lifeManager.decreaseLife()) {
 							// whoops! you're dead!
+							this.player.lifeManager.hide();
+							this.timerText.stopTimer();
 							this.messageScreen.show('You Lose');
 						}
 					}, this);

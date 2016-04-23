@@ -32,6 +32,14 @@
 			fontSize: 20
 		},
 
+		timerStyle: {
+			font: 'PT Mono',
+			fontSize: 10,
+			fill: '#ffffff',
+			stroke: '#000000',
+			strokeThickness: 2
+		},
+
 		gravityY: 110,
 		maxHearts: 4,
 		glitchWaveSpreadTime: 0.25 * Phaser.Timer.SECOND
