@@ -11,6 +11,7 @@
 
 		platforms: Phaser.Group;
 		enemies: Phaser.Group;
+		exit: Phaser.Sprite;
 
 		private findObjectsByType(typeName, map, layer) {
 			var result = new Array();
@@ -56,6 +57,17 @@
 			);
 		}
 
+		private createExit() {
+			var result = this.findObjectsByType('playerEnd', this.map, 'Objects');
+			this.exit = this.game.add.sprite(result[0].x, result[0].y, 'bustSprite');
+			this.exit.renderable = false;
+
+			this.game.physics.arcade.enableBody(this.exit);
+			this.exit.body.collideWorldBounds = true;
+			this.exit.body.immovable = true;
+			this.exit.body.allowGravity = false;
+		}
+
 		create() {
 			this.map = this.game.add.tilemap('level');
 			this.map.addTilesetImage('Tiles', 'tileset');
@@ -78,6 +90,7 @@
 			if (TAVP.Globals.gameMode != GameMode.NoEnemiesJumpOnly) {
 				this.createEnemies();
 			}
+			this.createExit();
 
 			this.dialogue = new TAVP.Dialogue(
 				this,
@@ -103,6 +116,15 @@
 			if (this.game.input.keyboard.isDown(Phaser.Keyboard.ESC)) {
 				this.game.state.start('MainMenu');
 			}
+
+			this.game.physics.arcade.overlap(this.player, this.exit,
+				() => {
+					// you won! conratulations!
+					// TODO: add proper winning message
+					console.log('You won!');
+					this.game.state.start('MainMenu');
+				}
+			);
 
 			if (this.glitchWave.checkOverlap(this.player.body.x, this.player.body.y + this.player.height)) {
 				// whoops! you're dead!
