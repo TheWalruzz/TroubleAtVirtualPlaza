@@ -12,22 +12,24 @@
 		playMusic: function (soundName: string) {
 			if (!TAVP.Globals.musicMuted) {
 				if (!TAVP.Globals.music.isPlaying) {
-					if (TAVP.Globals.music.name == soundName)
+					if (TAVP.Globals.music.name == soundName) {
+						TAVP.Globals.music.volume = 1;
 						TAVP.Globals.music.play();
-					else {
+					} else {
 						TAVP.Globals.music.stop();
 						TAVP.Globals.music = this.add.audio(soundName);
+						TAVP.Globals.music.volume = 1;
 						TAVP.Globals.music.play();
 					}
-				}
-				else if (TAVP.Globals.music.name != soundName) {
+				} else if (TAVP.Globals.music.name != soundName) {
 					TAVP.Globals.music.stop();
 					TAVP.Globals.music = this.add.audio(soundName);
+					TAVP.Globals.music.volume = 1;
 					TAVP.Globals.music.play();
 				}
-			}
-			else if (TAVP.Globals.music.isPlaying)
+			} else if (TAVP.Globals.music.isPlaying) {
 				TAVP.Globals.music.stop();
+			}
 		}
 	};
 } 
