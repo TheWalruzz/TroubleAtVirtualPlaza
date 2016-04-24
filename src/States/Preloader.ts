@@ -25,6 +25,7 @@
 			// TODO: add proper enemy sprite!
 			//this.game.load.spritesheet('walkingEnemy', 'res/walkingEnemy.png', 16, 16);
 			this.game.load.spritesheet('noise', 'res/noise.png', 128, 128);
+			this.game.load.image('dust', 'res/dust.png');
 
 			// load webfonts
 			this.game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
