@@ -15,6 +15,7 @@
 		enemies: Phaser.Group;
 		exit: Phaser.Sprite;
 		timer: Phaser.Timer;
+		background: Phaser.Sprite;
 
 		private findObjectsByType(typeName, map, layer) {
 			var result = new Array();
@@ -78,6 +79,10 @@
 			this.blockedLayer = this.map.createLayer('Blocking');
 			this.enemyBounds = this.map.createLayer('EnemyBounds');
 
+			this.background = this.game.add.sprite(0, 0, 'bg');
+			this.background.fixedToCamera = true;
+			this.background.alpha = 0;
+
 			this.map.setCollisionBetween(1, 50, true, 'Blocking');
 			this.bgLayer.resizeWorld();
 
@@ -117,7 +122,10 @@
 			this.messageScreen = new MessageScreen(
 				() => {
 					this.input.keyboard.onDownCallback = null;
-					this.game.state.start('MainMenu');
+
+					this.background.bringToTop();
+					var tweenAlpha = this.game.add.tween(this.background).to({ alpha: 1 }, Phaser.Timer.SECOND, Phaser.Easing.Linear.None, true);
+					tweenAlpha.onComplete.add(() => { this.game.state.start('MainMenu', true, false, true); }, this);
 				});
 
 			this.timerText = new TAVP.Timer();
@@ -125,7 +133,10 @@
 
 		update() {
 			if (this.game.input.keyboard.isDown(Phaser.Keyboard.ESC)) {
-				this.game.state.start('MainMenu');
+				this.background.bringToTop();
+
+				var tweenAlpha = this.game.add.tween(this.background).to({ alpha: 1 }, Phaser.Timer.SECOND, Phaser.Easing.Linear.None, true);
+				tweenAlpha.onComplete.add(() => { this.game.state.start('MainMenu', true, false, true); }, this);
 			}
 
 			this.game.physics.arcade.overlap(this.player, this.exit,

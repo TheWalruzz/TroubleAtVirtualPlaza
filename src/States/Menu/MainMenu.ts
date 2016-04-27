@@ -5,9 +5,15 @@
 		logo1: Phaser.Text;
 		logo2: Phaser.Text;
 
+		fadeIn: boolean;
+
 		menu: TAVP.Menu;
 
 		menuChoicesGrp: Phaser.Group;
+
+		init(fadeIn: boolean = false) {
+			this.fadeIn = fadeIn;
+		}
 
 		create() {
 			this.menuChoicesGrp = this.add.group();
@@ -57,7 +63,7 @@
 			for (var i = 0; i < this.menu.options.length; i++)
 				this.menuChoicesGrp.add(this.menu.options[i]);
 
-			if (!TAVP.Flags.mainMenuVisited) {
+			if (!TAVP.Flags.mainMenuVisited || this.fadeIn) {
 				this.menuChoicesGrp.alpha = 0;
 				var menuTween = this.add.tween(this.menuChoicesGrp).to({ alpha: 1 }, 1500, Phaser.Easing.Linear.None, true);
 
