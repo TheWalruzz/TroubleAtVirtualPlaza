@@ -40,7 +40,7 @@
 			strokeThickness: 2
 		},
 
-		gravityY: 110,
+		gravityY: 450,
 		maxHearts: 4,
 		glitchWaveSpreadTime: 0.25 * Phaser.Timer.SECOND
 	};

@@ -77,7 +77,7 @@
 					}
 
 					if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
-						this.body.velocity.y = -107;
+						this.body.velocity.y = -200;
 						this.animations.play('jump');
 
 						this.isJumping = true;
@@ -90,10 +90,10 @@
 
 					if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
 						this.scale.x = -1;
-						this.body.velocity.x = -30;
+						this.body.velocity.x = -70;
 					} else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
 						this.scale.x = 1;
-						this.body.velocity.x = 30;
+						this.body.velocity.x = 70;
 					}
 				}
 
