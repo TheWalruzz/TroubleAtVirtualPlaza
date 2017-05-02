@@ -783,6 +783,7 @@ var TAVP;
             this.preloadBar = this.add.sprite(28, 80, 'preloadBar');
             this.game.load.setPreloadSprite(this.preloadBar);
             this.game.load.audio('introMusic', 'res/intro.ogg');
+            this.game.load.audio('changeOption', 'res/click.ogg');
             this.game.load.image('bust', 'res/ma_bust.png');
             this.game.load.image('bg', 'res/background.png');
             this.game.load.image('dialogueBox', 'res/dialogueBox.png');
@@ -1132,6 +1133,8 @@ var TAVP;
                 this.options[i].x = centerXCoord - (this.options[i].width / 2);
                 this.options[i].y = startYCoord + ((this.options[i - 1].height * 0.75) * i);
             }
+            this.changeOptionSound = TAVP.Globals.game.add.audio('changeOption');
+            this.changeOptionSound.volume = 0.6;
         }
         Menu.prototype.setCallbacks = function (handlers) {
             if (this.options.length == handlers.length) {
@@ -1150,6 +1153,7 @@ var TAVP;
             }
         };
         Menu.prototype.upHandler = function () {
+            this.changeOptionSound.play();
             this.options[this.menuState].setStyle(this.notChosenStyle);
             this.menuState--;
             if (this.menuState < 0)
@@ -1157,6 +1161,7 @@ var TAVP;
             this.stateChanged = true;
         };
         Menu.prototype.downHandler = function () {
+            this.changeOptionSound.play();
             this.options[this.menuState].setStyle(this.notChosenStyle);
             this.menuState++;
             if (this.menuState > this.options.length - 1)

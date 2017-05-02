@@ -11,6 +11,8 @@
 		downKey: Phaser.Key;
 		enterKey: Phaser.Key;
 		handlers: { (): void }[];
+		changeOptionSound: Phaser.Sound;
+		confirmOptionSound: Phaser.Sound;
 
 		constructor(caller: Phaser.State, centerXCoord: number, startYCoord: number, texts: string[], notChosenStyle: {}, chosenStyle: {}) {
 			this.caller = caller;
@@ -30,6 +32,9 @@
 				this.options[i].x = centerXCoord - (this.options[i].width / 2);
 				this.options[i].y = startYCoord + ((this.options[i - 1].height * 0.75) * i);
 			}
+
+			this.changeOptionSound = TAVP.Globals.game.add.audio('changeOption');
+			this.changeOptionSound.volume = 0.6;
 		}
 
 		// setCallbacks function. Run it at the very end of create in your state.
@@ -55,6 +60,7 @@
 		}
 
 		private upHandler(): void {
+			this.changeOptionSound.play();
 			this.options[this.menuState].setStyle(this.notChosenStyle);
 			this.menuState--;
 			if (this.menuState < 0)
@@ -63,6 +69,7 @@
 		}
 
 		private downHandler(): void {
+			this.changeOptionSound.play();
 			this.options[this.menuState].setStyle(this.notChosenStyle);
 			this.menuState++;
 			if (this.menuState > this.options.length - 1)
