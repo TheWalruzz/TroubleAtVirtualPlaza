@@ -91,7 +91,7 @@
 
 			var result = this.findObjectsByType('playerStart', this.map, 'Objects');
 			this.player = new TAVP.Player(result[0].x, result[0].y,
-				((TAVP.Globals.gameMode != GameMode.GodSuperSpeed) ? 75 : 500));
+				((TAVP.Globals.gameMode != GameMode.GodSuperSpeed) ? 90 : 500));
 			this.game.camera.follow(this.player);
 
 			this.createPlatforms();

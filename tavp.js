@@ -188,6 +188,8 @@ var TAVP;
         function Player(x, y, moveSpeed) {
             var _this = this;
             _super.call(this, TAVP.Globals.game, x, y, 'playerSprite');
+            this.jumpTimer = 0;
+            this.releasedJump = false;
             this.smoothed = false;
             this.anchor.setTo(0.5, 0.5);
             this.animations.add('idle', [0, 1, 2, 3, 2, 1], 10, true);
@@ -218,7 +220,7 @@ var TAVP;
                 this.body.velocity.x = 0;
                 if (!this.isJumping) {
                     if (TAVP.Globals.gameMode != TAVP.GameMode.NoEnemiesJumpOnly
-                        && (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT) || TAVP.GamePadUtils.instance.axisX < -0.1)) {
+                        && (this.game.input.keyboard.isDown(Phaser.Keyboard.A) || TAVP.GamePadUtils.instance.axisX < -0.1)) {
                         this.body.velocity.x = -this.moveSpeed;
                         this.animations.play('run');
                         if (this.scale.x == 1) {
@@ -226,7 +228,7 @@ var TAVP;
                         }
                     }
                     else if (TAVP.Globals.gameMode != TAVP.GameMode.NoEnemiesJumpOnly
-                        && (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT) || TAVP.GamePadUtils.instance.axisX > 0.1)) {
+                        && (this.game.input.keyboard.isDown(Phaser.Keyboard.D) || TAVP.GamePadUtils.instance.axisX > 0.1)) {
                         this.body.velocity.x = this.moveSpeed;
                         this.animations.play('run');
                         if (this.scale.x == -1) {
@@ -237,8 +239,10 @@ var TAVP;
                         this.animations.play('idle');
                     }
                     if (this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) || TAVP.GamePadUtils.instance.isDown(Phaser.Gamepad.XBOX360_A)) {
-                        this.body.velocity.y = -200;
+                        this.body.velocity.y = -30;
                         this.animations.play('jump');
+                        this.releasedJump = false;
+                        this.jumpTimer = 0;
                         this.isJumping = true;
                     }
                 }
@@ -246,13 +250,20 @@ var TAVP;
                     if (this.animations.currentAnim == this.fallAnim)
                         if (this.body.velocity.y <= 0)
                             this.isJumping = false;
-                    if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT) || TAVP.GamePadUtils.instance.axisX < -0.1) {
+                    if (this.game.input.keyboard.isDown(Phaser.Keyboard.A) || TAVP.GamePadUtils.instance.axisX < -0.1) {
                         this.scale.x = -1;
                         this.body.velocity.x = -70;
                     }
-                    else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT) || TAVP.GamePadUtils.instance.axisX > 0.1) {
+                    else if (this.game.input.keyboard.isDown(Phaser.Keyboard.D) || TAVP.GamePadUtils.instance.axisX > 0.1) {
                         this.scale.x = 1;
                         this.body.velocity.x = 70;
+                    }
+                    if (!this.releasedJump && this.jumpTimer < 26 && (this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) || TAVP.GamePadUtils.instance.isDown(Phaser.Gamepad.XBOX360_A))) {
+                        this.body.velocity.y = -200 + (this.jumpTimer * 3.75);
+                        this.jumpTimer++;
+                    }
+                    if (this.game.input.keyboard.upDuration(Phaser.Keyboard.SPACEBAR) || TAVP.GamePadUtils.instance.isJustUp(Phaser.Gamepad.XBOX360_A)) {
+                        this.releasedJump = true;
                     }
                 }
                 if (this.body.velocity.y > 0 && this.animations.currentAnim != this.fallAnim)
@@ -522,7 +533,7 @@ var TAVP;
             this.map.setCollision(81, true, 'EnemyBounds');
             this.enemyBounds.visible = false;
             var result = this.findObjectsByType('playerStart', this.map, 'Objects');
-            this.player = new TAVP.Player(result[0].x, result[0].y, ((TAVP.Globals.gameMode != TAVP.GameMode.GodSuperSpeed) ? 75 : 500));
+            this.player = new TAVP.Player(result[0].x, result[0].y, ((TAVP.Globals.gameMode != TAVP.GameMode.GodSuperSpeed) ? 90 : 500));
             this.game.camera.follow(this.player);
             this.createPlatforms();
             if (TAVP.Globals.gameMode != TAVP.GameMode.NoEnemiesJumpOnly) {
@@ -831,8 +842,8 @@ var TAVP;
             this.prompt.visible = false;
             this.prompt.bringToTop();
             this.prompt.fixedToCamera = true;
-            this.spaceKey.onDown.add(this.skipHandler, this.caller);
-            this.enterKey.onDown.add(this.skipHandler, this.caller);
+            this.spaceKey.onDown.add(this.skipHandler.bind(this), this.caller);
+            this.enterKey.onDown.add(this.skipHandler.bind(this), this.caller);
             TAVP.Globals.game.input.gamepad.pad1.onDownCallback = function () {
                 if (TAVP.Globals.game.input.gamepad.pad1.justPressed(Phaser.Gamepad.XBOX360_A)) {
                     _this.skipHandler();
@@ -1018,6 +1029,9 @@ var TAVP;
         };
         GamePadUtils.prototype.isUp = function (button) {
             return this.padStatus && TAVP.Globals.game.input.gamepad.pad1.isUp(button);
+        };
+        GamePadUtils.prototype.isJustUp = function (button) {
+            return this.padStatus && TAVP.Globals.game.input.gamepad.pad1.justReleased(button);
         };
         Object.defineProperty(GamePadUtils.prototype, "axisX", {
             get: function () {

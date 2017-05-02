@@ -5,6 +5,8 @@
 		lifeManager: TAVP.LifeManager;
 
 		moveSpeed: number;
+		jumpTimer: number = 0;
+		releasedJump: boolean = false;
 
 		constructor(x: number, y: number, moveSpeed: number) {
 			super(TAVP.Globals.game, x, y, 'playerSprite');
@@ -58,7 +60,7 @@
 				if (!this.isJumping) {
 
 					if (TAVP.Globals.gameMode != GameMode.NoEnemiesJumpOnly
-						&& (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT) || GamePadUtils.instance.axisX < -0.1)) {
+						&& (this.game.input.keyboard.isDown(Phaser.Keyboard.A) || GamePadUtils.instance.axisX < -0.1)) {
 						this.body.velocity.x = -this.moveSpeed;
 						this.animations.play('run');
 
@@ -66,7 +68,7 @@
 							this.scale.x = -1;
 						}
 					} else if (TAVP.Globals.gameMode != GameMode.NoEnemiesJumpOnly
-						&& (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT) || GamePadUtils.instance.axisX > 0.1)) {
+						&& (this.game.input.keyboard.isDown(Phaser.Keyboard.D) || GamePadUtils.instance.axisX > 0.1)) {
 						this.body.velocity.x = this.moveSpeed;
 						this.animations.play('run');
 
@@ -78,8 +80,10 @@
 					}
 
 					if (this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) || GamePadUtils.instance.isDown(Phaser.Gamepad.XBOX360_A)) {
-						this.body.velocity.y = -200;
+						this.body.velocity.y = -30;
 						this.animations.play('jump');
+						this.releasedJump = false;
+						this.jumpTimer = 0;
 
 						this.isJumping = true;
 					}
@@ -89,12 +93,21 @@
 						if (this.body.velocity.y <= 0)
 							this.isJumping = false;
 
-					if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT) || GamePadUtils.instance.axisX < -0.1) {
+					if (this.game.input.keyboard.isDown(Phaser.Keyboard.A) || GamePadUtils.instance.axisX < -0.1) {
 						this.scale.x = -1;
 						this.body.velocity.x = -70;
-					} else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT) || GamePadUtils.instance.axisX > 0.1) {
+					} else if (this.game.input.keyboard.isDown(Phaser.Keyboard.D) || GamePadUtils.instance.axisX > 0.1) {
 						this.scale.x = 1;
 						this.body.velocity.x = 70;
+					}
+
+					if (!this.releasedJump && this.jumpTimer < 26 && (this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) || GamePadUtils.instance.isDown(Phaser.Gamepad.XBOX360_A))) {
+						this.body.velocity.y = -200 + (this.jumpTimer * 3.75);
+						this.jumpTimer++;
+					}
+
+					if (this.game.input.keyboard.upDuration(Phaser.Keyboard.SPACEBAR) || GamePadUtils.instance.isJustUp(Phaser.Gamepad.XBOX360_A)) {
+						this.releasedJump = true;
 					}
 				}
 

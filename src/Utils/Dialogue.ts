@@ -60,11 +60,11 @@
 			this.prompt.fixedToCamera = true;
 
 			this.spaceKey.onDown.add(
-				this.skipHandler,
+				this.skipHandler.bind(this),
 				this.caller);
 
 			this.enterKey.onDown.add(
-				this.skipHandler,
+				this.skipHandler.bind(this),
 				this.caller);
 			
 			TAVP.Globals.game.input.gamepad.pad1.onDownCallback = () => {

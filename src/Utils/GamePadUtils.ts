@@ -46,6 +46,10 @@ module TAVP {
             return this.padStatus && TAVP.Globals.game.input.gamepad.pad1.isUp(button);
         }
 
+        public isJustUp(button: number): boolean {
+            return this.padStatus && TAVP.Globals.game.input.gamepad.pad1.justReleased(button);
+        }
+
         public get axisX(): number {
             return this.padStatus && (this.dpadAxifiedX || TAVP.Globals.game.input.gamepad.pad1.axis(Phaser.Gamepad.XBOX360_STICK_LEFT_X));
         }
