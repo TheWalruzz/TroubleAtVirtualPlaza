@@ -9,6 +9,30 @@
 		alreadyEnded: boolean = false;
 		showAnyKey: boolean = false;
 
+		private anyKeyHandler(tweenAlpha) {
+			if (!this.alreadyEnded) {
+				tweenAlpha.stop();
+				this.bust.alpha = 1;
+
+				this.pressAnyKey.visible = false;
+
+				var tween = this.add.tween(this.bust).to({ x: 0 }, 3500, Phaser.Easing.Linear.None, true);
+				tween.onComplete.addOnce(
+					() => {
+						this.input.keyboard.onDownCallback = null;
+						this.game.input.gamepad.pad1.onUpCallback = null;
+						this.game.state.start('MainMenu');
+					});
+
+				this.alreadyEnded = true;
+			} else if (!TAVP.Flags.mainMenuVisited) {
+				TAVP.Flags.mainMenuVisited = true;
+				this.input.keyboard.onDownCallback = null;
+				this.game.input.gamepad.pad1.onUpCallback = null;
+				this.game.state.start('MainMenu');
+			}
+		};
+
 		create() {
 			this.background = this.add.sprite(0, 0, 'bg');
 
@@ -53,27 +77,8 @@
 			var tweenAlpha = this.add.tween(this.bust).to({ alpha: 1 }, 2000, Phaser.Easing.Linear.None, true);
 			tweenAlpha.onComplete.addOnce(() => { this.showAnyKey = true; });
 
-			this.input.keyboard.onDownCallback = () => {
-				if (!this.alreadyEnded) {
-					tweenAlpha.stop();
-					this.bust.alpha = 1;
-
-					this.pressAnyKey.visible = false;
-
-					var tween = this.add.tween(this.bust).to({ x: 0 }, 3500, Phaser.Easing.Linear.None, true);
-					tween.onComplete.addOnce(
-						() => {
-							this.input.keyboard.onDownCallback = null;
-							this.game.state.start('MainMenu');
-						});
-
-					this.alreadyEnded = true;
-				} else if (!TAVP.Flags.mainMenuVisited) {
-					TAVP.Flags.mainMenuVisited = true;
-					this.input.keyboard.onDownCallback = null;
-					this.game.state.start('MainMenu');
-				}
-			};
+			this.input.keyboard.onDownCallback = this.anyKeyHandler.bind(this, tweenAlpha);
+			this.game.input.gamepad.pad1.onUpCallback = this.anyKeyHandler.bind(this, tweenAlpha);
 
 			this.time.events.loop(
 				750,

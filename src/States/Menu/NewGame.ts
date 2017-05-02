@@ -14,7 +14,9 @@
 				TAVP.Globals.music.onFadeComplete.addOnce(() => TAVP.Globals.music.stop());
 			}
 			var tween = this.add.tween(this.allImages).to({ alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
-			tween.onComplete.addOnce(() => this.game.state.start('Level'));
+			tween.onComplete.addOnce(() => {
+				this.game.state.start('Level');
+			});
 		}
 
 		create() {

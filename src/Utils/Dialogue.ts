@@ -60,40 +60,39 @@
 			this.prompt.fixedToCamera = true;
 
 			this.spaceKey.onDown.add(
-				() => {
-					if (this.active) {
-						if (this.isReadyForNext) {
-							this.currentText++;
-							this.showNextText();
-						}
-						else {
-							for (var i = 0; i < this.currentTextLines.length; i++)
-								this.textLines[i].text = this.currentTextLines[i];
-
-							this.isReadyForNext = true;
-						}
-					}
-				},
+				this.skipHandler,
 				this.caller);
 
 			this.enterKey.onDown.add(
-				() => {
-					if (this.active) {
-						if (this.isReadyForNext) {
-							this.currentText++;
-							this.showNextText();
-						}
-						else {
-							for (var i = 0; i < this.currentTextLines.length; i++)
-								this.textLines[i].text = this.currentTextLines[i];
-
-							this.isReadyForNext = true;
-						}
-					}
-				},
+				this.skipHandler,
 				this.caller);
+			
+			TAVP.Globals.game.input.gamepad.pad1.onDownCallback = () => {
+				if (TAVP.Globals.game.input.gamepad.pad1.justPressed(Phaser.Gamepad.XBOX360_A)) {
+					this.skipHandler();
+				}
+			};
+
+			// this.caller.shutdown = () => {
+			// 	TAVP.Globals.game.input.gamepad.pad1.onDownCallback = null;
+			// };
 
 			this.stopCallback = stopCallback;
+		}
+
+		skipHandler() {
+			if (this.active) {
+				if (this.isReadyForNext) {
+					this.currentText++;
+					this.showNextText();
+				}
+				else {
+					for (var i = 0; i < this.currentTextLines.length; i++)
+						this.textLines[i].text = this.currentTextLines[i];
+
+					this.isReadyForNext = true;
+				}
+			}
 		}
 
 		start() {

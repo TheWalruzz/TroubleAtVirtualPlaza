@@ -36,6 +36,7 @@
 
 		create() {
 			this.game.time.events.add(Phaser.Timer.SECOND, () => TAVP.Globals.game.state.start('Intro'), this);
+			this.game.input.gamepad.start();
 		}
 
 		render() { TAVP.Utilities.render(); }

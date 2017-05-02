@@ -10,6 +10,7 @@
 		upKey: Phaser.Key;
 		downKey: Phaser.Key;
 		enterKey: Phaser.Key;
+		handlers: { (): void }[];
 
 		constructor(caller: Phaser.State, centerXCoord: number, startYCoord: number, texts: string[], notChosenStyle: {}, chosenStyle: {}) {
 			this.caller = caller;
@@ -43,36 +44,54 @@
 				this.enterKey.onDown.forget();
 
 				if (this.options.length > 1) {
-					this.upKey.onDown.add(
-						() => {
-							this.options[this.menuState].setStyle(this.notChosenStyle);
-							this.menuState--;
-							if (this.menuState < 0)
-								this.menuState = this.options.length - 1;
-							this.stateChanged = true;
-						},
-						this.caller);
-
-					this.downKey.onDown.add(
-						() => {
-							this.options[this.menuState].setStyle(this.notChosenStyle);
-							this.menuState++;
-							if (this.menuState > this.options.length - 1)
-								this.menuState = 0;
-							this.stateChanged = true;
-						},
-						this.caller);
+					this.upKey.onDown.add(this.upHandler.bind(this), this.caller);
+					this.downKey.onDown.add(this.downHandler.bind(this), this.caller);
 				}
 
-				this.enterKey.onDown.add(
-					() => handlers[this.menuState](),
-					this.caller);
+				this.enterKey.onDown.add(this.confirmHandler.bind(this), this.caller);
+				
+				this.handlers = handlers;
 			}
+		}
+
+		private upHandler(): void {
+			this.options[this.menuState].setStyle(this.notChosenStyle);
+			this.menuState--;
+			if (this.menuState < 0)
+				this.menuState = this.options.length - 1;
+			this.stateChanged = true;
+		}
+
+		private downHandler(): void {
+			this.options[this.menuState].setStyle(this.notChosenStyle);
+			this.menuState++;
+			if (this.menuState > this.options.length - 1)
+				this.menuState = 0;
+			this.stateChanged = true;
+		}
+
+		private confirmHandler(handlers): void {
+			this.handlers[this.menuState]();
 		}
 
 		// call it in update function in State if you want to change the actual choice
 		// returns true if state was changed, false otherwise
 		update(): boolean {
+			if ((new Date()).getTime() > GamePadUtils.instance.padCooldown && GamePadUtils.instance.axisY < -0.1) {
+				GamePadUtils.instance.padCooldown = (new Date()).getTime() + 250;
+				this.upHandler();
+			}
+
+			if ((new Date()).getTime() > GamePadUtils.instance.padCooldown && GamePadUtils.instance.axisY > 0.1) {
+				GamePadUtils.instance.padCooldown = (new Date()).getTime() + 250;
+				this.downHandler();
+			}
+
+			if ((new Date()).getTime() > GamePadUtils.instance.padCooldown && GamePadUtils.instance.isJustDown(Phaser.Gamepad.XBOX360_A)) {
+				GamePadUtils.instance.padCooldown = (new Date()).getTime() + 250;
+				this.confirmHandler(this.handlers);
+			}
+
 			if (this.stateChanged) {
 				this.stateChanged = false;
 				this.options[this.menuState].setStyle(this.chosenStyle);

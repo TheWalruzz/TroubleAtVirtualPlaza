@@ -91,7 +91,7 @@
 
 			var result = this.findObjectsByType('playerStart', this.map, 'Objects');
 			this.player = new TAVP.Player(result[0].x, result[0].y,
-				((TAVP.Globals.gameMode != GameMode.GodSuperSpeed) ? 65 : 500));
+				((TAVP.Globals.gameMode != GameMode.GodSuperSpeed) ? 75 : 500));
 			this.game.camera.follow(this.player);
 
 			this.createPlatforms();
@@ -132,7 +132,7 @@
 		}
 
 		update() {
-			if (this.game.input.keyboard.isDown(Phaser.Keyboard.ESC)) {
+			if (this.game.input.keyboard.isDown(Phaser.Keyboard.ESC) || GamePadUtils.instance.isJustDown(Phaser.Gamepad.XBOX360_START)) {
 				this.background.bringToTop();
 
 				var tweenAlpha = this.game.add.tween(this.background).to({ alpha: 1 }, Phaser.Timer.SECOND, Phaser.Easing.Linear.None, true);

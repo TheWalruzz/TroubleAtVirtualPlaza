@@ -1,0 +1,22 @@
+{
+  "name": "tavp",
+  "version": "1.0.0",
+  "description": "A vaporwave-themed platformer based on Phaser engine and TypeScript language.",
+  "main": "tavp.js",
+  "scripts": {
+    "start": "node server/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheWalruzz/TroubleAtVirtualPlaza.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TheWalruzz/TroubleAtVirtualPlaza/issues"
+  },
+  "homepage": "https://github.com/TheWalruzz/TroubleAtVirtualPlaza#readme",
+  "devDependencies": {
+    "node-static": "^0.7.9"
+  }
+}

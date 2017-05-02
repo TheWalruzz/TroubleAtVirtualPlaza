@@ -42,7 +42,7 @@
 
 					this.game.time.events.add(Phaser.Timer.SECOND * 2,
 						() => {
-							this.body.velocity.y = -90;
+							this.body.velocity.y = -200;
 							this.isWaiting = false;
 							this.isJumping = true;
 						},
@@ -56,7 +56,7 @@
 					this.game.time.events.add(Phaser.Timer.SECOND,
 						() => {
 							this.body.allowGravity = true;
-							this.body.velocity.y = 150;
+							this.body.velocity.y = 250;
 						},
 						this);
 				}

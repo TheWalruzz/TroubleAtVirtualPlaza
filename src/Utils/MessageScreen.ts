@@ -45,6 +45,10 @@
 				this);
 
 			this.game.input.keyboard.onDownCallback = this.endCallback;
+			this.game.input.gamepad.pad1.onUpCallback = () => {
+				this.endCallback();
+				this.game.input.gamepad.pad1.onUpCallback = null;
+			};
 		}
 
 		show(message: string) {
