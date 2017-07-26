@@ -10,6 +10,7 @@
 		upKey: Phaser.Key;
 		downKey: Phaser.Key;
 		enterKey: Phaser.Key;
+		escapeKey: Phaser.Key;
 		handlers: { (): void }[];
 		changeOptionSound: Phaser.Sound;
 		confirmOptionSound: Phaser.Sound;
@@ -45,10 +46,12 @@
 				this.upKey = this.caller.input.keyboard.addKey(Phaser.Keyboard.UP);
 				this.downKey = this.caller.input.keyboard.addKey(Phaser.Keyboard.DOWN);
 				this.enterKey = this.caller.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+				this.escapeKey = this.caller.input.keyboard.addKey(Phaser.Keyboard.ESC);
 
 				this.upKey.onDown.forget();
 				this.downKey.onDown.forget();
 				this.enterKey.onDown.forget();
+				this.escapeKey.onDown.forget();
 
 				if (this.options.length > 1) {
 					this.upKey.onDown.add(this.upHandler.bind(this), this.caller);
@@ -56,6 +59,7 @@
 				}
 
 				this.enterKey.onDown.add(this.confirmHandler.bind(this), this.caller);
+				this.escapeKey.onDown.add(this.backHandler.bind(this), this.caller);
 				
 				this.handlers = handlers;
 			}
@@ -83,6 +87,12 @@
 			this.handlers[this.menuState]();
 		}
 
+		private backHandler(): void {
+			if (!!this.previousState) {
+				this.caller.game.state.start(this.previousState);
+			}
+		}
+
 		// call it in update function in State if you want to change the actual choice
 		// returns true if state was changed, false otherwise
 		update(): boolean {
@@ -101,9 +111,9 @@
 				this.confirmHandler(this.handlers);
 			}
 
-			if (!!this.previousState && (new Date()).getTime() > GamePadUtils.instance.padCooldown && GamePadUtils.instance.isJustDown(Phaser.Gamepad.XBOX360_B)) {
+			if ((new Date()).getTime() > GamePadUtils.instance.padCooldown && GamePadUtils.instance.isJustDown(Phaser.Gamepad.XBOX360_B)) {
 				GamePadUtils.instance.padCooldown = (new Date()).getTime() + 250;
-				this.caller.game.state.start(this.previousState);
+				this.backHandler();
 			}
 
 			if (this.stateChanged) {

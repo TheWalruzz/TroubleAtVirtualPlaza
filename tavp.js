@@ -1143,14 +1143,17 @@ var TAVP;
                 this.upKey = this.caller.input.keyboard.addKey(Phaser.Keyboard.UP);
                 this.downKey = this.caller.input.keyboard.addKey(Phaser.Keyboard.DOWN);
                 this.enterKey = this.caller.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+                this.escapeKey = this.caller.input.keyboard.addKey(Phaser.Keyboard.ESC);
                 this.upKey.onDown.forget();
                 this.downKey.onDown.forget();
                 this.enterKey.onDown.forget();
+                this.escapeKey.onDown.forget();
                 if (this.options.length > 1) {
                     this.upKey.onDown.add(this.upHandler.bind(this), this.caller);
                     this.downKey.onDown.add(this.downHandler.bind(this), this.caller);
                 }
                 this.enterKey.onDown.add(this.confirmHandler.bind(this), this.caller);
+                this.escapeKey.onDown.add(this.backHandler.bind(this), this.caller);
                 this.handlers = handlers;
             }
         };
@@ -1173,6 +1176,11 @@ var TAVP;
         Menu.prototype.confirmHandler = function (handlers) {
             this.handlers[this.menuState]();
         };
+        Menu.prototype.backHandler = function () {
+            if (!!this.previousState) {
+                this.caller.game.state.start(this.previousState);
+            }
+        };
         Menu.prototype.update = function () {
             if ((new Date()).getTime() > TAVP.GamePadUtils.instance.padCooldown && TAVP.GamePadUtils.instance.axisY < -0.1) {
                 TAVP.GamePadUtils.instance.padCooldown = (new Date()).getTime() + 250;
@@ -1186,9 +1194,9 @@ var TAVP;
                 TAVP.GamePadUtils.instance.padCooldown = (new Date()).getTime() + 250;
                 this.confirmHandler(this.handlers);
             }
-            if (!!this.previousState && (new Date()).getTime() > TAVP.GamePadUtils.instance.padCooldown && TAVP.GamePadUtils.instance.isJustDown(Phaser.Gamepad.XBOX360_B)) {
+            if ((new Date()).getTime() > TAVP.GamePadUtils.instance.padCooldown && TAVP.GamePadUtils.instance.isJustDown(Phaser.Gamepad.XBOX360_B)) {
                 TAVP.GamePadUtils.instance.padCooldown = (new Date()).getTime() + 250;
-                this.caller.game.state.start(this.previousState);
+                this.backHandler();
             }
             if (this.stateChanged) {
                 this.stateChanged = false;
