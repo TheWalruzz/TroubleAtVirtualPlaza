@@ -32,7 +32,9 @@
 					'Back'
 				],
 				TAVP.Config.menuStyle,
-				TAVP.Config.menuStyleChosen);
+				TAVP.Config.menuStyleChosen,
+				'MainMenu'
+			);
 
 			this.menu.setCallbacks(
 				[

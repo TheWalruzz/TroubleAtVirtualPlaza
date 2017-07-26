@@ -52,7 +52,9 @@
 					'Back'
 				],
 				TAVP.Config.menuStyle,
-				TAVP.Config.menuStyleChosen);
+				TAVP.Config.menuStyleChosen,
+				'MainMenu'
+			);
 
 			for (var i = 0; i < this.menu.options.length; i++) {
 				this.allImages.add(this.menu.options[i]);

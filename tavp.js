@@ -701,7 +701,7 @@ var TAVP;
                 'God mode/Super speed',
                 'No enemies/Jump only',
                 'Back'
-            ], TAVP.Config.menuStyle, TAVP.Config.menuStyleChosen);
+            ], TAVP.Config.menuStyle, TAVP.Config.menuStyleChosen, 'MainMenu');
             for (var i = 0; i < this.menu.options.length; i++) {
                 this.allImages.add(this.menu.options[i]);
             }
@@ -754,7 +754,7 @@ var TAVP;
             this.menu = new TAVP.Menu(this, this.world.centerX, this.world.centerY - 10, [
                 'Music: ' + ((TAVP.Globals.musicMuted) ? 'Off' : 'On'),
                 'Back'
-            ], TAVP.Config.menuStyle, TAVP.Config.menuStyleChosen);
+            ], TAVP.Config.menuStyle, TAVP.Config.menuStyleChosen, 'MainMenu');
             this.menu.setCallbacks([
                 function () {
                     TAVP.Globals.musicMuted = !TAVP.Globals.musicMuted;
@@ -1117,7 +1117,8 @@ var TAVP;
 var TAVP;
 (function (TAVP) {
     var Menu = (function () {
-        function Menu(caller, centerXCoord, startYCoord, texts, notChosenStyle, chosenStyle) {
+        function Menu(caller, centerXCoord, startYCoord, texts, notChosenStyle, chosenStyle, previousState) {
+            if (previousState === void 0) { previousState = null; }
             this.caller = caller;
             this.texts = texts;
             this.notChosenStyle = notChosenStyle;
@@ -1125,6 +1126,7 @@ var TAVP;
             this.options = [];
             this.menuState = 0;
             this.stateChanged = true;
+            this.previousState = previousState;
             this.options.push(this.caller.game.add.text(0, 0, this.texts[0], this.notChosenStyle));
             this.options[0].x = centerXCoord - (this.options[0].width / 2);
             this.options[0].y = startYCoord;
@@ -1134,7 +1136,7 @@ var TAVP;
                 this.options[i].y = startYCoord + ((this.options[i - 1].height * 0.75) * i);
             }
             this.changeOptionSound = TAVP.Globals.game.add.audio('changeOption');
-            this.changeOptionSound.volume = 0.6;
+            this.changeOptionSound.volume = 0.1;
         }
         Menu.prototype.setCallbacks = function (handlers) {
             if (this.options.length == handlers.length) {
@@ -1183,6 +1185,10 @@ var TAVP;
             if ((new Date()).getTime() > TAVP.GamePadUtils.instance.padCooldown && TAVP.GamePadUtils.instance.isJustDown(Phaser.Gamepad.XBOX360_A)) {
                 TAVP.GamePadUtils.instance.padCooldown = (new Date()).getTime() + 250;
                 this.confirmHandler(this.handlers);
+            }
+            if (!!this.previousState && (new Date()).getTime() > TAVP.GamePadUtils.instance.padCooldown && TAVP.GamePadUtils.instance.isJustDown(Phaser.Gamepad.XBOX360_B)) {
+                TAVP.GamePadUtils.instance.padCooldown = (new Date()).getTime() + 250;
+                this.caller.game.state.start(this.previousState);
             }
             if (this.stateChanged) {
                 this.stateChanged = false;

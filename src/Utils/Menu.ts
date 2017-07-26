@@ -13,8 +13,9 @@
 		handlers: { (): void }[];
 		changeOptionSound: Phaser.Sound;
 		confirmOptionSound: Phaser.Sound;
+		previousState: string;
 
-		constructor(caller: Phaser.State, centerXCoord: number, startYCoord: number, texts: string[], notChosenStyle: {}, chosenStyle: {}) {
+		constructor(caller: Phaser.State, centerXCoord: number, startYCoord: number, texts: string[], notChosenStyle: {}, chosenStyle: {}, previousState: string = null) {
 			this.caller = caller;
 			this.texts = texts;
 			this.notChosenStyle = notChosenStyle;
@@ -22,6 +23,7 @@
 			this.options = [];
 			this.menuState = 0;
 			this.stateChanged = true;
+			this.previousState = previousState;
 
 			this.options.push(this.caller.game.add.text(0, 0, this.texts[0], this.notChosenStyle));
 			this.options[0].x = centerXCoord - (this.options[0].width / 2);
@@ -34,7 +36,7 @@
 			}
 
 			this.changeOptionSound = TAVP.Globals.game.add.audio('changeOption');
-			this.changeOptionSound.volume = 0.6;
+			this.changeOptionSound.volume = 0.1;
 		}
 
 		// setCallbacks function. Run it at the very end of create in your state.
@@ -97,6 +99,11 @@
 			if ((new Date()).getTime() > GamePadUtils.instance.padCooldown && GamePadUtils.instance.isJustDown(Phaser.Gamepad.XBOX360_A)) {
 				GamePadUtils.instance.padCooldown = (new Date()).getTime() + 250;
 				this.confirmHandler(this.handlers);
+			}
+
+			if (!!this.previousState && (new Date()).getTime() > GamePadUtils.instance.padCooldown && GamePadUtils.instance.isJustDown(Phaser.Gamepad.XBOX360_B)) {
+				GamePadUtils.instance.padCooldown = (new Date()).getTime() + 250;
+				this.caller.game.state.start(this.previousState);
 			}
 
 			if (this.stateChanged) {
