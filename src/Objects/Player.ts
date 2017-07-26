@@ -7,6 +7,7 @@
 		moveSpeed: number;
 		jumpTimer: number = 0;
 		releasedJump: boolean = false;
+		jumpSound: Phaser.Sound;
 
 		constructor(x: number, y: number, moveSpeed: number) {
 			super(TAVP.Globals.game, x, y, 'playerSprite');
@@ -34,6 +35,9 @@
 
 			this.lifeManager = new LifeManager(TAVP.Globals.game);
 			this.lifeManager.hide();
+
+			this.jumpSound = TAVP.Globals.game.add.audio('jump');
+			this.jumpSound.volume = 0.1;
 
 			this.game.time.events.loop(0.1 * Phaser.Timer.SECOND,
 				() => {
@@ -84,6 +88,7 @@
 						this.animations.play('jump');
 						this.releasedJump = false;
 						this.jumpTimer = 0;
+						this.jumpSound.play();
 
 						this.isJumping = true;
 					}

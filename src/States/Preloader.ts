@@ -13,6 +13,7 @@
 			// all the resource loading goes here:
 			this.game.load.audio('introMusic', 'res/intro.ogg');
 			this.game.load.audio('changeOption', 'res/click.ogg');
+			this.game.load.audio('jump', 'res/jump.ogg');
 			// this.game.load.audio('chooseOption', 'res/choose_level.ogg');
 			this.game.load.image('bust', 'res/ma_bust.png');
 			this.game.load.image('bg', 'res/background.png');

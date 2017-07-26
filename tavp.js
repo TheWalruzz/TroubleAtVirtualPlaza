@@ -203,6 +203,8 @@ var TAVP;
             this.isJumping = false;
             this.lifeManager = new TAVP.LifeManager(TAVP.Globals.game);
             this.lifeManager.hide();
+            this.jumpSound = TAVP.Globals.game.add.audio('jump');
+            this.jumpSound.volume = 0.1;
             this.game.time.events.loop(0.1 * Phaser.Timer.SECOND, function () {
                 if (_this.lifeManager.isInvincible) {
                     _this.visible = !_this.visible;
@@ -243,6 +245,7 @@ var TAVP;
                         this.animations.play('jump');
                         this.releasedJump = false;
                         this.jumpTimer = 0;
+                        this.jumpSound.play();
                         this.isJumping = true;
                     }
                 }
@@ -784,6 +787,7 @@ var TAVP;
             this.game.load.setPreloadSprite(this.preloadBar);
             this.game.load.audio('introMusic', 'res/intro.ogg');
             this.game.load.audio('changeOption', 'res/click.ogg');
+            this.game.load.audio('jump', 'res/jump.ogg');
             this.game.load.image('bust', 'res/ma_bust.png');
             this.game.load.image('bg', 'res/background.png');
             this.game.load.image('dialogueBox', 'res/dialogueBox.png');
